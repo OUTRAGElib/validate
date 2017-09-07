@@ -1,0 +1,81 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "ec05fbec093a679e59e357d394106945",
+    "content-hash": "fff18e0f550f3567ce9e85e3c0442cc8",
+    "packages": [
+        {
+            "name": "outragelib/delegator",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/OUTRAGElib/delegator.git",
+                "reference": "cbbda9d63ef2a00a76dfbeac40953c39a44c51cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/OUTRAGElib/delegator/zipball/cbbda9d63ef2a00a76dfbeac40953c39a44c51cb",
+                "reference": "cbbda9d63ef2a00a76dfbeac40953c39a44c51cb",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OUTRAGElib\\": "./lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "David Weston",
+                    "email": "westie@typefish.co.uk",
+                    "homepage": "http://www.typefish.co.uk"
+                }
+            ],
+            "description": "OUTRAGElib test",
+            "time": "2017-09-07 19:30:56"
+        },
+        {
+            "name": "outragelib/objectlist",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/OUTRAGElib/objectlist.git",
+                "reference": "052c41feaa03f654b6bbf04b3abd832b56e8286f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/OUTRAGElib/objectlist/zipball/052c41feaa03f654b6bbf04b3abd832b56e8286f",
+                "reference": "052c41feaa03f654b6bbf04b3abd832b56e8286f",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OUTRAGElib\\": "./lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "David Weston",
+                    "email": "westie@typefish.co.uk",
+                    "homepage": "http://www.typefish.co.uk"
+                }
+            ],
+            "description": "OUTRAGElib object list",
+            "time": "2017-09-07 19:28:46"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

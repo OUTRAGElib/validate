@@ -8,7 +8,8 @@ namespace OUTRAGElib\Validate;
 
 use \Exception;
 use \Traversable;
-use \OUTRAGElib\Structure\ObjectList\ObjectListInterface;
+use \OUTRAGElib\Structure\ObjectListInterface;
+use \OUTRAGElib\Structure\NotFoundException;
 
 class ElementList extends Component implements ObjectListInterface
 {
@@ -456,5 +457,26 @@ class ElementList extends Component implements ObjectListInterface
 	{
 		$this->children = [];
 		return $this;
+	}
+	
+	
+	/**
+	 *	ContainerInterface: does a property exist?
+	 */
+	public function has($property)
+	{
+		return array_key_exists($property, $this->children);
+	}
+	
+	
+	/**
+	 *	ContainerInterface: retrieve a property if it does exist
+	 */
+	public function get($property)
+	{
+		if(!array_key_exists($property, $this->children))
+			throw new NotFoundException("Invalid property '".$property."'");
+		
+		return $this->list[$property];
 	}
 }

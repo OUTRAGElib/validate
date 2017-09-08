@@ -7,7 +7,7 @@
 namespace OUTRAGElib\Validate;
 
 
-abstract class Condition
+abstract class ConstraintAbstract implements ConstraintInterface
 {
 	/**
 	 *	Store the error message in this variable, the validator
@@ -25,8 +25,8 @@ abstract class Condition
 		
 		if(count($arguments))
 		{
-			if(method_exists($this, "methodArgs"))
-				call_user_func_array([ $this, "methodArgs" ], $arguments);
+			if(method_exists($this, "init"))
+				call_user_func_array([ $this, "init" ], $arguments);
 		}
 		
 		return true;
@@ -40,24 +40,17 @@ abstract class Condition
 	 *	A false value denotes success, a true value denotes failure. Compare this
 	 *	to the return values of a process in your operating system. $? anyone?
 	 */
-	abstract public function validate($input);
+	public function test($input)
+	{
+		return true;
+	}
 	
 	
 	/**
 	 *	Method to allow the validator access to the error message.
 	 */
-	public function error()
+	public function getError()
 	{
 		return $this->error;
-	}
-	
-	
-	/**
-	 *	Cleans the error log, ready for a fresh validation.
-	 */
-	public function clean()
-	{
-		$this->error = null;
-		return $this;
 	}
 }

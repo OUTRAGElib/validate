@@ -6,7 +6,9 @@
 
 namespace OUTRAGElib\Validate;
 
+use \Exception;
 use \OUTRAGElib\Delegator\DelegatorTrait;
+use \OUTRAGElib\Validate\ConstraintWrapperInterface;
 use \OUTRAGElib\Validate\Error\ErrorableInterface;
 use \OUTRAGElib\Validate\Error\ErrorMessage;
 
@@ -46,6 +48,12 @@ abstract class Component implements ErrorableInterface
 	 *	We'll store all errors here as well.
 	 */
 	public $errors = [];
+	
+	
+	/**
+	 *	What constraint wrappers are currently in use?
+	 */
+	protected $constraint_wrappers = [];
 	
 	
 	/**
@@ -120,7 +128,12 @@ abstract class Component implements ErrorableInterface
 		$pointer = $this->parent;
 		
 		while($pointer->parent !== null)
+		{
 			$pointer = $pointer->parent;
+			
+			if($pointer instanceof Component == false)
+				throw new Exception("Invalid parent hierarchy");
+		}
 		
 		return $pointer;
 	}
@@ -201,6 +214,25 @@ abstract class Component implements ErrorableInterface
 		}
 		
 		return $errors; 
+	}
+	
+	
+	/**
+	 *	Adds a constraint wrapper to the validation request
+	 */
+	public function addConstraintWrapper(ConstraintWrapperInterface $wrapper)
+	{
+		$this->constraint_wrappers[] = $wrapper;
+		return $this;
+	}
+	
+	
+	/**
+	 *	Retrieves all constraint wrappers
+	 */
+	public function getConstraintWrappers()
+	{
+		return $this->constraint_wrappers;
 	}
 	
 	

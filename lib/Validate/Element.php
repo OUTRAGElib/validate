@@ -6,6 +6,7 @@
 
 namespace OUTRAGElib\Validate;
 
+use \Exception;
 use \OUTRAGElib\Validate\Error\ErrorableInterface;
 use \OUTRAGElib\Validate\Error\ErrorMessage;
 
@@ -15,7 +16,7 @@ class Element extends Component
 	 *	Stores a list of all conditions that this element depends on for a
 	 *	successful validation.
 	 */
-	protected $conditions = [];
+	protected $constraints = [];
 	
 	
 	/**
@@ -29,6 +30,11 @@ class Element extends Component
 	 */
 	public function validate($input, $context = null)
 	{
+		# first thing we need to check - do we have a root? we should have, regardless
+		# of whether or not we're testing this within the bounds of a form
+		if(!$this->root)
+			throw new Exception("Root element not found");
+		
 		if($input === null)
 			$input = $this->default;
 		
@@ -38,21 +44,32 @@ class Element extends Component
 		if(!$this->is_array && is_array($input))
 			$input = null;
 		
-		$result = $input;
-		
-		foreach($this->conditions as $condition)
+		foreach($this->root->getConstraintWrappers() as $wrapper)
 		{
-			if($condition->clean()->validate($result))
+			# a cool feature of this is that we're able to just stick any type
+			# of conditional in and as long as the constraint wrapper is available
+			# it will just go ahead and test it - how fun, right?
+			foreach($wrapper->filterConstraints($this->constraints) as $constraint)
 			{
-				if($context != null && $context instanceof ErrorableInterface)
-					$context->triggerError($this, $condition->error());
+				$errors = [];
+				$result = $wrapper->validate($constraint, $input, $errors);
+				
+				if($result == false)
+				{
+					if($context != null && $context instanceof ErrorableInterface)
+					{
+						# it's best for the errors to always be arrays
+						if(is_array($errors))
+						{
+							foreach($errors as $error)
+								$context->triggerError($this, $error);
+						}
+					}
+				}
 			}
-			
-			if($condition instanceof Transformer)
-				$result = $condition->transform($result);
 		}
 		
-		return $result;
+		return $input;
 	}
 	
 	
@@ -60,26 +77,26 @@ class Element extends Component
 	 *	So, since we're at this point, we can presume that we're going to either create
 	 *	or modify a validator - so we'll do that stuff here!
 	 */
-	public function __call($condition, $arguments)
+	public function __call($constraint, $arguments)
 	{
 		$matches = [];
 		
-		if(preg_match("/^(has|remove)([A-Za-z])$/", $condition, $matches))
+		if(preg_match("/^(has|remove)([A-Za-z])$/", $constraint, $matches))
 		{
 			switch($matches[1])
 			{
 				case "has":
-					return $this->hasCondition($matches[2]);
+					return $this->hasConstraint($matches[2]);
 				break;
 				
 				case "remove":
-					return $this->removeCondition($matches[2]);
+					return $this->removeConstraint($matches[2]);
 				break;
 			}
 		}
 		else
 		{
-			return $this->addCondition($condition, $arguments);
+			return $this->addConstraint($constraint);
 		}
 	}
 	
@@ -87,30 +104,9 @@ class Element extends Component
 	/**
 	 *	Add a validator
 	 */
-	public function addCondition($condition, $arguments = [])
+	public function addConstraint($constraint)
 	{
-		if(!is_object($condition))
-		{
-			$class = "\\OUTRAGElib\\Validate\\Conditions\\".ucfirst($condition);
-			
-			if(!class_exists($class))
-				throw new \Exception("Invalid validator condition: '".$condition."'");
-			
-			$condition = new $class();
-		}
-		
-		$this->conditions[] = $condition;
-		
-		# deals with this library's condition set
-		if($condition instanceof Condition)
-		{
-			if(!empty($arguments))
-			{
-				if(method_exists($condition, "methodArgs"))
-					call_user_func_array([ $condition, "methodArgs" ], $arguments);
-			}
-		}
-		
+		$this->constraints[] = $constraint;
 		return $this;
 	}
 	
@@ -118,74 +114,15 @@ class Element extends Component
 	/**
 	 *	Checks to see if this validator is in use
 	 */
-	public function hasCondition($condition)
+	public function hasConstraint($constraint)
 	{
-		# for those objects
-		if(is_object($condition))
-			return in_array($condition, $this->conditions, true);
-		
-		if(is_string($condition))
-		{
-			if(class_exists($condition))
-			{
-				# for those full paths
-				foreach($this->conditions as $item)
-				{
-					if(get_class($item) == $condition)
-						return true;
-				}
-			}
-			elseif(class_exists("\\OUTRAGElib\\Validate\\Conditions\\".ucfirst($condition)))
-			{
-				# for those short paths
-				foreach($this->conditions as $item)
-				{
-					if("\\".get_class($item) == "\\OUTRAGElib\\Validate\\Conditions\\".ucfirst($condition))
-						return true;
-				}
-			}
-		}
-		
-		return false;
 	}
 	
 	
 	/**
 	 *	Removes all conditions that match what is provided
 	 */
-	public function removeCondition($condition)
+	public function removeConstraint($constraint)
 	{
-		# for the objects
-		if(is_object($condition))
-		{
-			$key = array_search($condition, $this->conditions);
-			
-			if($key !== false)
-				unset($this->conditions[$key]);
-		}
-		
-		if(is_string($condition))
-		{
-			if(class_exists($condition))
-			{
-				# for those full paths
-				foreach($this->conditions as $key => $item)
-				{
-					if(get_class($item) == $condition)
-						unset($this->conditions[$key]);
-				}
-			}
-			elseif(class_exists("\\OUTRAGElib\\Validate\\Conditions\\".ucfirst($condition)))
-			{
-				# for those short paths
-				foreach($this->conditions as $key => $item)
-				{
-					if("\\".get_class($item) == "\\OUTRAGElib\\Validate\\Conditions\\".ucfirst($condition))
-						unset($this->conditions[$key]);
-				}
-			}
-		}
-		
-		return $this;
 	}
 }

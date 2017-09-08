@@ -8,7 +8,7 @@
 namespace OUTRAGElib\Validate;
 
 
-interface Transformer
+interface TransformerInterface
 {
 	/**
 	 *	Called to transform a value into something that we're wanting.

@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ec05fbec093a679e59e357d394106945",
-    "content-hash": "fff18e0f550f3567ce9e85e3c0442cc8",
+    "hash": "bf3d392b767dc4bfd7272f142e90af67",
+    "content-hash": "8f234da8b2cdf0db8f010ce8ccadbcc6",
     "packages": [
         {
             "name": "outragelib/delegator",
-            "version": "1.0.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/OUTRAGElib/delegator.git",
-                "reference": "cbbda9d63ef2a00a76dfbeac40953c39a44c51cb"
+                "reference": "e5111f4c4a90cd7262a212bd20f1cbd8fc922037"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OUTRAGElib/delegator/zipball/cbbda9d63ef2a00a76dfbeac40953c39a44c51cb",
-                "reference": "cbbda9d63ef2a00a76dfbeac40953c39a44c51cb",
+                "url": "https://api.github.com/repos/OUTRAGElib/delegator/zipball/e5111f4c4a90cd7262a212bd20f1cbd8fc922037",
+                "reference": "e5111f4c4a90cd7262a212bd20f1cbd8fc922037",
                 "shasum": ""
             },
             "type": "library",
@@ -28,28 +28,30 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
             "authors": [
                 {
                     "name": "David Weston",
-                    "email": "westie@typefish.co.uk",
-                    "homepage": "http://www.typefish.co.uk"
+                    "email": "westie@typefish.co.uk"
                 }
             ],
-            "description": "OUTRAGElib test",
-            "time": "2017-09-07 19:30:56"
+            "description": "Delegator library for OUTRAGElib",
+            "time": "2017-09-07 19:58:03"
         },
         {
             "name": "outragelib/objectlist",
-            "version": "1.0.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/OUTRAGElib/objectlist.git",
-                "reference": "052c41feaa03f654b6bbf04b3abd832b56e8286f"
+                "reference": "3aadf2fcf4dad34e746d7939464e6e2b88f1ce6a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OUTRAGElib/objectlist/zipball/052c41feaa03f654b6bbf04b3abd832b56e8286f",
-                "reference": "052c41feaa03f654b6bbf04b3abd832b56e8286f",
+                "url": "https://api.github.com/repos/OUTRAGElib/objectlist/zipball/3aadf2fcf4dad34e746d7939464e6e2b88f1ce6a",
+                "reference": "3aadf2fcf4dad34e746d7939464e6e2b88f1ce6a",
                 "shasum": ""
             },
             "type": "library",
@@ -59,21 +61,26 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
             "authors": [
                 {
                     "name": "David Weston",
-                    "email": "westie@typefish.co.uk",
-                    "homepage": "http://www.typefish.co.uk"
+                    "email": "westie@typefish.co.uk"
                 }
             ],
-            "description": "OUTRAGElib object list",
-            "time": "2017-09-07 19:28:46"
+            "description": "ObjectList library for OUTRAGElib",
+            "time": "2017-09-07 19:58:20"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "outragelib/delegator": 20,
+        "outragelib/objectlist": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

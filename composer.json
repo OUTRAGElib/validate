@@ -3,8 +3,8 @@
     "description": "Validation library for OUTRAGElib",
     "type": "library",
     "require": {
-        "outragelib/delegator": "^1.0",
-        "outragelib/objectlist": "^1.0"
+        "outragelib/delegator": "dev-master",
+        "outragelib/objectlist": "dev-master"
     },
     "license": "MIT",
     "authors": [
@@ -15,6 +15,8 @@
     ],
     "minimum-stability": "dev",
     "autoload": {
-        "psr-4": { "OUTRAGElib\\": "./lib" }
+        "psr-4": {
+            "OUTRAGElib\\": "./lib"
+        }
     }
 }

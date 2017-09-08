@@ -29,6 +29,9 @@ class FileBuffer extends Element
 			# okay, now we have everything, we're going to open the temp file (and
 			# not copy it over because this isn't required) - i'm hoping that this
 			# sort of naming scheme won't cause any issues with filters and the like?
+			if(is_null($tmp_name) || !file_exists($tmp_name))
+				return false;
+			
 			$temp_fp = fopen($tmp_name, "r");
 			
 			if(!is_resource($temp_fp))
@@ -76,10 +79,13 @@ class FileBuffer extends Element
 		
 		for($i = 0; $i <= $levels; ++$i)
 		{
-			if(is_array($files[$tree[$i]]))
-				$files = $files[$tree[$i]];
-			else
-				return $files[$tree[$i]];
+			if(isset($files[$tree[$i]]))
+			{
+				if(is_array($files[$tree[$i]]))
+					$files = $files[$tree[$i]];
+				else
+					return $files[$tree[$i]];
+			}
 		}
 		
 		return null;

@@ -1,8 +1,4 @@
 <?php
-/**
- *	Interface to ensure that an object accepts having errors thrown
- *	into it
- */
 
 
 namespace OUTRAGElib\Validate\Error;

@@ -13,6 +13,7 @@ $whoops->register();
 
 use \OUTRAGElib\Validate\BufferElement\FileBuffer;
 use \OUTRAGElib\Validate\BufferElement\StringBuffer;
+use \OUTRAGElib\Validate\Constraint\Required;
 use \OUTRAGElib\Validate\ConstraintWrapper;
 use \OUTRAGElib\Validate\Element;
 use \OUTRAGElib\Validate\ElementList;
@@ -26,8 +27,9 @@ $template->addConstraintWrapper(new ConstraintWrapper\Callback());
 $template->addConstraintWrapper(new ConstraintWrapper\Symfony());
 
 $field1 = new Element("field1");
-$field1->addConstraint(function($input) { return false; });
+$field1->addConstraint(function($input) { return true; });
 $field1->addConstraint(new \Symfony\Component\Validator\Constraints\Length([ "min" => 10 ]));
+$field1->addConstraint(new Required(true));
 
 $template->append($field1);
 $template->append("field2");

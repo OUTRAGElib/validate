@@ -1,7 +1,4 @@
 <?php
-/**
- *	Template for validation components in OUTRAGElib.
- */
 
 
 namespace OUTRAGElib\Validate;

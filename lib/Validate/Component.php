@@ -1,7 +1,4 @@
 <?php
-/**
- *	The base of all input validation classes - the component.
- */
 
 
 namespace OUTRAGElib\Validate;

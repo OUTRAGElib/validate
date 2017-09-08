@@ -1,7 +1,4 @@
 <?php
-/**
- *	Element for array input validation for OUTRAGElib.
- */
 
 
 namespace OUTRAGElib\Validate;
@@ -9,6 +6,7 @@ namespace OUTRAGElib\Validate;
 use \Exception;
 use \OUTRAGElib\Validate\Error\ErrorableInterface;
 use \OUTRAGElib\Validate\Error\ErrorMessage;
+
 
 class Element extends Component
 {

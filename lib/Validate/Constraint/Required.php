@@ -1,10 +1,10 @@
 <?php
-/**
- *	Validation condition for OUTRAGElib: Required values.
- */
 
 
 namespace OUTRAGElib\Validate\Constraint;
+
+use \Exception;
+use \OUTRAGElib\Validate\ConstraintAbstract;
 
 
 class Required extends ConstraintAbstract

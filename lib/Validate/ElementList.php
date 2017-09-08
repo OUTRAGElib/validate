@@ -1,7 +1,4 @@
 <?php
-/**
- *	Template for array input validation for OUTRAGElib.
- */
 
 
 namespace OUTRAGElib\Validate;
@@ -10,6 +7,7 @@ use \Exception;
 use \Traversable;
 use \OUTRAGElib\Structure\ObjectListInterface;
 use \OUTRAGElib\Structure\NotFoundException;
+
 
 class ElementList extends Component implements ObjectListInterface
 {

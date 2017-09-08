@@ -1,11 +1,9 @@
 <?php
-/**
- *	Element for array input validation for OUTRAGElib.
- */
 
 
 namespace OUTRAGElib\Validate\BufferElement;
 
+use \Exception;
 use \OUTRAGElib\Validate\Element;
 
 

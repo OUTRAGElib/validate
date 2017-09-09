@@ -229,7 +229,7 @@ class ElementList extends Component implements ObjectListInterface
 	 */
 	public function getValues()
 	{
-		return (new ValueFlattener($this->values))->getContext();
+		return (new ValueBuilder($this->values))->getContext();
 	}
 	
 	

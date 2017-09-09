@@ -4,7 +4,7 @@
 namespace OUTRAGElib\Validate;
 
 
-class ValueFlattener
+class ValueBuilder
 {
 	/**
 	 *	List of values that have been flattened/merged
@@ -17,7 +17,8 @@ class ValueFlattener
 	 */
 	public function __construct($pairs)
 	{
-		$this->context = $this->flatten($pairs);
+		if(count($pairs) > 0)
+			$this->context = $this->flatten($pairs);
 	}
 	
 	

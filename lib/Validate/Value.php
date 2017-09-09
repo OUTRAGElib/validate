@@ -120,53 +120,6 @@ class Value implements ErrorInterface
 	
 	
 	/**
-	 *	Flattens an array of Values into a nested array.
-	 */
-	public static function flatten($pairs = [], $offset = 0, &$context = [])
-	{
-		foreach($pairs as $pair)
-		{
-			$pointer = &$context;
-			
-			if($count = count($pair->tree))
-			{
-				for($i = $offset; $i < $count; ++$i)
-				{
-					$key = (string) $pair->tree[$i];
-					
-					if(!isset($pointer[$key]))
-						$pointer[$key] = [];
-					
-					$pointer = &$pointer[$key];
-				}
-				
-				if(is_array($pair->value))
-				{
-					if(isset($pair->element) && $pair->element->is_array)
-					{
-						foreach($pair->value as $item)
-							self::flatten($item, $offset, $context);
-					}
-					else
-					{
-						self::flatten($pair->value, $offset, $context);
-					}
-				}
-				else
-				{
-					$pointer = $pair->value;
-				}
-			}
-			
-			unset($pair);
-			unset($pointer);
-		}
-		
-		return $context;
-	}
-	
-	
-	/**
 	 *	Creates a new value pair, but with this element in some sort of root level.
 	 */
 	public function rebase($offset = null)

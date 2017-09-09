@@ -93,5 +93,5 @@ $template->validate([
     ],
 ]);
 
-var_dump($template->getValues(), $template->getErrors());
+var_dump($template->getValues(), $template->getErrors(), $field1->getErrors());
 exit;

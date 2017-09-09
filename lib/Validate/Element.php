@@ -49,7 +49,7 @@ class Element extends Component implements ElementInterface
 			foreach($wrapper->filterConstraints($this->constraints) as $constraint)
 			{
 				$errors = [];
-				$result = $wrapper->validate($constraint, $input, $errors);
+				$result = $this->validateConstraint($wrapper, $constraint, $input, $errors);
 				
 				if($result == false)
 				{
@@ -67,6 +67,15 @@ class Element extends Component implements ElementInterface
 		}
 		
 		return $input;
+	}
+	
+	
+	/**
+	 *	Validate a constraint
+	 */
+	protected function validateConstraint(ConstraintWrapperInterface $wrapper, $constraint, $input, &$errors = [])
+	{
+		return $wrapper->validate($constraint, $input, $errors);
 	}
 	
 	

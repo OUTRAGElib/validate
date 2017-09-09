@@ -50,7 +50,7 @@ $sub2->setIsArray(true);
 $sub2->append("field1");
 $sub2->append("field2");
 $sub2->append("field3");
-$sub2->append((new StringBufferElement("field4")));
+$sub2->append((new StringBufferElement("field4"))->required(true));
 
 $sub2->appendTo($sub1);
 
@@ -62,36 +62,36 @@ $template->validate([
     "field4" => [ 1 ],
     
     "bravo" => [
-        "field1" => 1,
-        "field2" => 1,
-        "field3" => 1,
-        "field4" => [ 1 ],
+        "field1" => 19,
+        "field2" => 19,
+        "field3" => 19,
+        "field4" => [ 19 ],
         
         "delta" => [
             [
-                "field1" => 1,
-                "field2" => 1,
-                "field3" => 1,
+                "field1" => 2,
+                "field2" => 2,
+                "field3" => 2,
             ],
             [
-                "field1" => 1,
-                "field2" => 1,
-                "field3" => 1,
+                "field1" => 31,
+                "field2" => 31,
+                "field3" => 31,
             ],
             [
-                "field1" => 1,
-                "field2" => 1,
-                "field3" => 1,
+                "field1" => 17,
+                "field2" => 17,
+                "field3" => 17,
             ],
             [
-                "field1" => 1,
-                "field2" => 1,
-                "field3" => 1,
-                "field4" => "ddd",
+                "field1" => 76,
+                "field2" => 76,
+                "field3" => 76,
+                "field4" => 99999,
             ],
         ]
     ],
 ]);
 
-var_dump($template->getValues(), $template->getErrors(), $field1->getErrors());
+var_dump($template->getValues());
 exit;

@@ -4,7 +4,7 @@
 namespace OUTRAGElib\Validate\BufferElement\Storage;
 
 
-class StorageMemory implements StorageInterface
+class StorageTemporary implements StorageInterface
 {
 	/**
 	 *	Retrieve the context that has been generated

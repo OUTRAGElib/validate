@@ -5,7 +5,9 @@
     "require": {
         "outragelib/delegator": "dev-master",
         "outragelib/objectlist": "dev-master",
-        "guzzlehttp/guzzle": "~6.0"
+        "guzzlehttp/guzzle": "~6.0",
+        "league/flysystem-memory": "^1.0",
+        "twistor/flysystem-stream-wrapper": "^1.0"
     },
     "license": "MIT",
     "authors": [

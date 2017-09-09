@@ -37,15 +37,13 @@ if(!empty($_POST))
 	$sub2->append(new FileBufferElement("upload2"));
 	$sub2->appendTo($sub1);
 	
-	$_POST["bravo"]["delta"]["upload3"] = "https://ss.westie.sh/W7aa";
-	$_POST["bravo"]["delta"]["upload2"] = "https://assets-cdn.github.com/assets/github-980cd404854e87ee88b12c7281a0875365a8f966c834dc30f3f656011f7f4df6.css";
+	# $_POST["bravo"]["delta"]["upload"] = "https://ss.westie.sh/W7aa";
+	# $_POST["bravo"]["delta"]["upload2"] = "https://assets-cdn.github.com/assets/github-980cd404854e87ee88b12c7281a0875365a8f966c834dc30f3f656011f7f4df6.css";
 	
 	$template->validate($_POST);
 	$d = $template->getValues();
 	
-	var_dump($d);
-	var_dump(stream_get_contents($d["bravo"]["delta"]["upload2"]));
-	var_dump(stream_get_meta_data($d["bravo"]["delta"]["upload2"]));
+	var_dump(stream_get_meta_data($d["bravo"]["delta"]["upload"])["uri"]);
 	
 	exit;
 }

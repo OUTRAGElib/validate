@@ -6,7 +6,7 @@ namespace OUTRAGElib\Validate\BufferElement;
 use \Exception;
 use \OUTRAGElib\Validate\BufferElement\Provider;
 use \OUTRAGElib\Validate\BufferElementAbstract;
-use \OUTRAGElib\Validate\BufferElement\Storage\StorageMemory;
+use \OUTRAGElib\Validate\BufferElement\Storage\StorageMemoryFilesystem;
 
 
 class FileBufferElement extends BufferElementAbstract
@@ -17,7 +17,7 @@ class FileBufferElement extends BufferElementAbstract
 	public function validate($input, $context = null)
 	{
 		$fp = null;
-		$storage = new StorageMemory();
+		$storage = new StorageMemoryFilesystem();
 		
 		# if input is null, we need to check to see if this element exists within
 		# the $_FILES object - if so, put in temp stream

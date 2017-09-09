@@ -13,6 +13,15 @@ use \ReflectionObject;
 class Callback extends ConstraintWrapperAbstract
 {
 	/**
+	 *	Is this wrapper actually able to be used?
+	 */
+	public function isAvailable()
+	{
+		return class_exists('\Closure');
+	}
+	
+	
+	/**
 	 *	Checks to see whether or not this particular type of constraint
 	 *	can be accepted by this object
 	 */

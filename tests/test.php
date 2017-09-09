@@ -21,15 +21,11 @@ use \OUTRAGElib\Validate\ElementList;
 
 $template = new ElementList();
 
-$template->addConstraintWrapper(new ConstraintWrapper\OUTRAGElib());
-$template->addConstraintWrapper(new ConstraintWrapper\Zend());
-$template->addConstraintWrapper(new ConstraintWrapper\Callback());
-$template->addConstraintWrapper(new ConstraintWrapper\Symfony());
-
 $field1 = new Element("field1");
 $field1->addConstraint(function($input) { return true; });
 $field1->addConstraint(new \Symfony\Component\Validator\Constraints\Length([ "min" => 10 ]));
 $field1->addConstraint(new Required(true));
+$field1->addConstraint(new \Zend\Validator\Regex("/^bb$/"));
 
 $template->append($field1);
 $template->append("field2");

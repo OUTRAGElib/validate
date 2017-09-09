@@ -7,6 +7,12 @@ namespace OUTRAGElib\Validate;
 interface ConstraintWrapperInterface
 {
 	/**
+	 *	Is this wrapper actually able to be used?
+	 */
+	public function isAvailable();
+	
+	
+	/**
 	 *	Checks to see whether or not this particular type of constraint
 	 *	can be accepted by this object
 	 */

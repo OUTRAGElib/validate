@@ -11,6 +11,15 @@ use \OUTRAGElib\Validate\ConstraintWrapperAbstract;
 class OUTRAGElib extends ConstraintWrapperAbstract
 {
 	/**
+	 *	Is this wrapper actually able to be used?
+	 */
+	public function isAvailable()
+	{
+		return interface_exists('\OUTRAGElib\Validate\ConstraintInterface');
+	}
+	
+	
+	/**
 	 *	Checks to see whether or not this particular type of constraint
 	 *	can be accepted by this object
 	 */

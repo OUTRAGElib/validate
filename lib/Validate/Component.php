@@ -5,9 +5,11 @@ namespace OUTRAGElib\Validate;
 
 use \Exception;
 use \OUTRAGElib\Delegator\DelegatorTrait;
+use \OUTRAGElib\Validate\ConstraintWrapper;
 use \OUTRAGElib\Validate\ConstraintWrapperInterface;
 use \OUTRAGElib\Validate\Error\ErrorableInterface;
 use \OUTRAGElib\Validate\Error\ErrorMessage;
+
 
 abstract class Component implements ErrorableInterface
 {
@@ -229,6 +231,21 @@ abstract class Component implements ErrorableInterface
 	 */
 	public function getConstraintWrappers()
 	{
+		# okay, so if the constraint wrappers are empty, we're going to have to
+		# populate them, fun times...
+		# we'll just for the moment use the four below - let's see how nice this will end up
+		if(empty($this->constraint_wrappers))
+		{
+			foreach([ "OUTRAGElib", "Callback", "Symfony", "Zend" ] as $name)
+			{
+				$class = '\OUTRAGElib\Validate\ConstraintWrapper\\'.$name;
+				$object = new $class();
+				
+				if($object->isAvailable())
+					$this->constraint_wrappers[] = $object;
+			}
+		}
+		
 		return $this->constraint_wrappers;
 	}
 	

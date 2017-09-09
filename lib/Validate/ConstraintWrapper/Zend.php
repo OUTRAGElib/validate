@@ -11,6 +11,15 @@ use \OUTRAGElib\Validate\ConstraintWrapperAbstract;
 class Zend extends ConstraintWrapperAbstract
 {
 	/**
+	 *	Is this wrapper actually able to be used?
+	 */
+	public function isAvailable()
+	{
+		return interface_exists('\Zend\Validator\ValidatorInterface');
+	}
+	
+	
+	/**
 	 *	Checks to see whether or not this particular type of constraint
 	 *	can be accepted by this object
 	 */

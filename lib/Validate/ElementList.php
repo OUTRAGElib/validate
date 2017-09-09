@@ -317,7 +317,7 @@ class ElementList extends Component implements ObjectListInterface
 		if(is_string($value))
 			$value = new Element($value);
 		elseif($value instanceof Component == false)
-			throw new InvalidTypeException("Unable to add item to list - invalid type");
+			throw new Exception("Unable to add item to list - invalid type");
 		
 		if($value->parent)
 			$value->parent->remove($value);
@@ -335,7 +335,7 @@ class ElementList extends Component implements ObjectListInterface
 	public function remove($value)
 	{
 		if($value instanceof Component == false)
-			throw new InvalidTypeException("Unable to add item to list - invalid type");
+			throw new Exception("Unable to add item to list - invalid type");
 		
 		$value->parent = null;
 		
@@ -365,7 +365,7 @@ class ElementList extends Component implements ObjectListInterface
 	public function unshift($value)
 	{
 		if($value instanceof Component == false)
-			throw new InvalidTypeException("Unable to add item to list - invalid type");
+			throw new Exception("Unable to add item to list - invalid type");
 		
 		array_unshift($this->children, $value);
 		return $this;

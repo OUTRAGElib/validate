@@ -4,11 +4,10 @@
 namespace OUTRAGElib\Validate;
 
 use \Exception;
-use \OUTRAGElib\Validate\Error\ErrorableInterface;
-use \OUTRAGElib\Validate\Error\ErrorMessage;
+use \OUTRAGElib\Validate\ErrorInterface;
 
 
-class Element extends Component
+class Element extends Component implements ElementInterface
 {
 	/**
 	 *	Stores a list of all conditions that this element depends on for a
@@ -54,7 +53,7 @@ class Element extends Component
 				
 				if($result == false)
 				{
-					if($context != null && $context instanceof ErrorableInterface)
+					if(is_object($context) && $context instanceof ErrorInterface)
 					{
 						# it's best for the errors to always be arrays
 						if(is_array($errors))
@@ -94,8 +93,13 @@ class Element extends Component
 		}
 		else
 		{
-			return $this->addConstraint($constraint);
+			$factory = new ConstraintFactory($constraint, $arguments);
+			
+			if($object = $factory->getConstraint())
+				return $this->addConstraint($object);
 		}
+		
+		throw new Exception("Method not found");
 	}
 	
 	

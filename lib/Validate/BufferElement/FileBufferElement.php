@@ -5,9 +5,10 @@ namespace OUTRAGElib\Validate\BufferElement;
 
 use \Exception;
 use \OUTRAGElib\Validate\Element;
+use \OUTRAGElib\Validate\BufferElementInterface;
 
 
-class FileBuffer extends Element
+class FileBufferElement extends Element implements BufferElementInterface
 {
 	/**
 	 *	Perform a validation on this element based on the condition.

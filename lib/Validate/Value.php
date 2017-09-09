@@ -4,10 +4,11 @@
 namespace OUTRAGElib\Validate;
 
 use \OUTRAGElib\Delegator\DelegatorTrait;
-use \OUTRAGElib\Validate\Error\ErrorableInterface;
+use \OUTRAGElib\Validate\ErrorInterface;
 use \OUTRAGElib\Validate\Error\ErrorMessage;
 
-class Value implements ErrorableInterface
+
+class Value implements ErrorInterface
 {
 	/**
 	 *	Let's use delegation here.
@@ -62,7 +63,7 @@ class Value implements ErrorableInterface
 	 *	Add an error to this component, and if a parent somewhere exists,
 	 *	to the parent form as well.
 	 */
-	public function triggerError($context, $message = null)
+	public function triggerError(ElementInterface $context, $message = null)
 	{
 		$error = new ErrorMessage();
 		
@@ -72,15 +73,32 @@ class Value implements ErrorableInterface
 		
 		$context->errors[] = $error;
 		
-		if(!empty($context->parent))
-		{
-			for($parent = $context->parent; $parent->parent != null; $parent = $parent->parent);
-			
-			if($parent instanceof ElementList)
-				$parent->errors[] = $error;
-		}
+		if($context->root instanceof ElementList)
+			$context->root->errors[] = $error;
 		
 		return $this;
+	}
+	
+	
+	/**
+	 *	Retrieve errors against this element.
+	 */
+	public function getErrors($named = true)
+	{
+		if(!$named)
+			return $this->errors;
+		
+		$errors = [];
+		
+		foreach($this->errors as $error)
+		{
+			if(!isset($errors[$error->name]))
+				$errors[$error->name] = [];
+			
+			$errors[$error->name][] = $error->message;
+		}
+		
+		return $errors; 
 	}
 	
 	

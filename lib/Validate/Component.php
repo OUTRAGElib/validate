@@ -5,13 +5,10 @@ namespace OUTRAGElib\Validate;
 
 use \Exception;
 use \OUTRAGElib\Delegator\DelegatorTrait;
-use \OUTRAGElib\Validate\ConstraintWrapper;
 use \OUTRAGElib\Validate\ConstraintWrapperInterface;
-use \OUTRAGElib\Validate\Error\ErrorableInterface;
-use \OUTRAGElib\Validate\Error\ErrorMessage;
 
 
-abstract class Component implements ErrorableInterface
+abstract class Component implements ComponentInterface
 {
 	/**
 	 *	We'd like to use some delegators to make our life ever so easier.
@@ -179,17 +176,22 @@ abstract class Component implements ErrorableInterface
 	
 	
 	/**
-	 *	Add an error to this component.
+	 *	Add an error to this component, and if a parent somewhere exists,
+	 *	to the parent form as well.
 	 */
-	public function triggerError($context, $message = null)
+	public function triggerError(ElementInterface $context, $message = null)
 	{
-		$error = new Error\Message();
+		$error = new ErrorMessage();
 		
-		$error->name = $context->name;
+		$error->name = $this->name ?: $context->name;
 		$error->context = $context;
 		$error->message = $message;
 		
-		$this->errors[] = $error;
+		$context->errors[] = $error;
+		
+		if($context->root instanceof ElementList)
+			$context->root->errors[] = $error;
+		
 		return $this;
 	}
 	

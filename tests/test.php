@@ -11,8 +11,8 @@ $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
 $whoops->register();
 
 
-use \OUTRAGElib\Validate\BufferElement\FileBuffer;
-use \OUTRAGElib\Validate\BufferElement\StringBuffer;
+use \OUTRAGElib\Validate\BufferElement\FileBufferElement;
+use \OUTRAGElib\Validate\BufferElement\StringBufferElement;
 use \OUTRAGElib\Validate\Constraint\Required;
 use \OUTRAGElib\Validate\ConstraintWrapper;
 use \OUTRAGElib\Validate\Element;
@@ -22,6 +22,7 @@ use \OUTRAGElib\Validate\ElementList;
 $template = new ElementList();
 
 $field1 = new Element("field1");
+$field1->required(true);
 $field1->addConstraint(function($input) { return true; });
 $field1->addConstraint(new \Symfony\Component\Validator\Constraints\Length([ "min" => 10 ]));
 $field1->addConstraint(new Required(true));
@@ -49,7 +50,7 @@ $sub2->setIsArray(true);
 $sub2->append("field1");
 $sub2->append("field2");
 $sub2->append("field3");
-$sub2->append((new StringBuffer("field4")));
+$sub2->append((new StringBufferElement("field4")));
 
 $sub2->appendTo($sub1);
 

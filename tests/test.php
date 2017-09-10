@@ -2,6 +2,7 @@
 
 
 ini_set("xdebug.var_display_max_depth", 256);
+ini_set("display_errors", 1);
 
 require "../vendor/autoload.php";
 
@@ -40,6 +41,7 @@ $sub1->append("field1");
 $sub1->append("field2");
 $sub1->append("field3");
 $sub1->append((new Element("field4"))->setIsArray(true));
+$sub1->append(new FileBufferElement("field5"));
 
 $sub1->appendTo($template);
 
@@ -66,6 +68,7 @@ $template->validate([
         "field2" => 19,
         "field3" => 19,
         "field4" => [ 19 ],
+        "field5" => "http://outragelib.local/validate/LICENSE",
         
         "delta" => [
             [
@@ -93,5 +96,5 @@ $template->validate([
     ],
 ]);
 
-var_dump($template->getValues());
+var_dump(stream_get_meta_data($template->getValues()["bravo"]["field5"]));
 exit;

@@ -17,6 +17,13 @@ class ElementListBuilderTest extends TestCase
 	/**
 	 *	A test case to test the generation of a simple validation
 	 *	structure
+	 *
+	 *	@covers \OUTRAGElib\Validate\Component
+	 *	@covers \OUTRAGElib\Validate\Constraint\Required
+	 *	@covers \OUTRAGElib\Validate\ConstraintAbstract
+	 *	@covers \OUTRAGElib\Validate\Element
+	 *	@covers \OUTRAGElib\Validate\ElementList
+	 *	@covers \OUTRAGElib\Validate\ElementListBuilder
 	 */
 	public function testElementListConstruction()
 	{
@@ -46,7 +53,19 @@ class ElementListBuilderTest extends TestCase
 	
 	/**
 	 *	Now perform a test to see if we can validate this with empty values
-	 *
+	 *	
+	 *	@covers \OUTRAGElib\Validate\Component
+	 *	@covers \OUTRAGElib\Validate\Constraint\Required
+	 *	@covers \OUTRAGElib\Validate\ConstraintAbstract
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapper\Callback
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapper\OUTRAGElib
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapper\Symfony
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapper\Zend
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapperAbstract
+	 *	@covers \OUTRAGElib\Validate\Element
+	 *	@covers \OUTRAGElib\Validate\ElementList
+	 *	@covers \OUTRAGElib\Validate\Value
+	 *	@covers \OUTRAGElib\Validate\ValueBuilder
 	 *	@depends testElementListConstruction
 	 */
 	public function testElementListValidationEmpty(ElementListInterface $template)
@@ -79,7 +98,19 @@ class ElementListBuilderTest extends TestCase
 	
 	/**
 	 *	Now perform a test to see if we can validate this with incorrect values
-	 *
+	 *	
+	 *	@covers \OUTRAGElib\Validate\Component
+	 *	@covers \OUTRAGElib\Validate\Constraint\Required
+	 *	@covers \OUTRAGElib\Validate\ConstraintAbstract
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapper\Callback
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapper\OUTRAGElib
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapper\Symfony
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapper\Zend
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapperAbstract
+	 *	@covers \OUTRAGElib\Validate\Element
+	 *	@covers \OUTRAGElib\Validate\ElementList
+	 *	@covers \OUTRAGElib\Validate\Value
+	 *	@covers \OUTRAGElib\Validate\ValueBuilder
 	 *	@depends testElementListConstruction
 	 */
 	public function testElementListValidationIncorrectValues(ElementListInterface $template)
@@ -114,7 +145,19 @@ class ElementListBuilderTest extends TestCase
 	
 	/**
 	 *	Now perform a test to see if we can validate this with partial values
-	 *
+	 *	
+	 *	@covers \OUTRAGElib\Validate\Component
+	 *	@covers \OUTRAGElib\Validate\Constraint\Required
+	 *	@covers \OUTRAGElib\Validate\ConstraintAbstract
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapper\Callback
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapper\OUTRAGElib
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapper\Symfony
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapper\Zend
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapperAbstract
+	 *	@covers \OUTRAGElib\Validate\Element
+	 *	@covers \OUTRAGElib\Validate\ElementList
+	 *	@covers \OUTRAGElib\Validate\Value
+	 *	@covers \OUTRAGElib\Validate\ValueBuilder
 	 *	@depends testElementListConstruction
 	 */
 	public function testElementListValidationPartialValues(ElementListInterface $template)
@@ -163,7 +206,19 @@ class ElementListBuilderTest extends TestCase
 	
 	/**
 	 *	Now perform a test to see if we can validate this with correct values
-	 *
+	 *	
+	 *	@covers \OUTRAGElib\Validate\Component
+	 *	@covers \OUTRAGElib\Validate\Constraint\Required
+	 *	@covers \OUTRAGElib\Validate\ConstraintAbstract
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapper\Callback
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapper\OUTRAGElib
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapper\Symfony
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapper\Zend
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapperAbstract
+	 *	@covers \OUTRAGElib\Validate\Element
+	 *	@covers \OUTRAGElib\Validate\ElementList
+	 *	@covers \OUTRAGElib\Validate\Value
+	 *	@covers \OUTRAGElib\Validate\ValueBuilder
 	 *	@depends testElementListConstruction
 	 */
 	public function testElementListValidationCorrectValues(ElementListInterface $template)

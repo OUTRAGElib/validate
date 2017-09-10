@@ -15,11 +15,17 @@ class StringBufferElement extends BufferElementAbstract
 	 */
 	public function validate($input, $context = null)
 	{
-		# the pattern should be type, mime/type, name
-		$fp = fopen("php://temp/string/application/text/buffer.txt", "w+");
+		$fp = null;
 		
-		if($input !== null)
+		if(is_resource($input))
 		{
+			$fp = $input;
+		}
+		elseif(!is_null($input))
+		{
+			# the pattern should be type, mime/type, name
+			$fp = fopen("php://temp/string/application/text/buffer.txt", "w+");
+			
 			fwrite($fp, $input);
 			rewind($fp);
 		}

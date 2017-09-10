@@ -44,7 +44,7 @@ class ThirdPartyValidatorTest extends TestCase
 	 *
 	 *	@depends testElementListConstruction
 	 */
-	public function testElementAddConstraintSymfony(ElementList $template)
+	public function testElementAddConstraintSymfony(ElementListInterface $template)
 	{
 		$this->assertTrue($template->hasElement("symfony"));
 		
@@ -69,7 +69,7 @@ class ThirdPartyValidatorTest extends TestCase
 	 *
 	 *	@depends testElementListConstruction
 	 */
-	public function testElementAddConstraintZend(ElementList $template)
+	public function testElementAddConstraintZend(ElementListInterface $template)
 	{
 		$this->assertTrue($template->hasElement("zend"));
 		

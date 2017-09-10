@@ -32,11 +32,16 @@ class BufferElementAbstract extends Element implements BufferElementInterface
 	 */
 	protected function validateConstraint(ConstraintWrapperInterface $wrapper, $constraint, $input, &$errors = [])
 	{
-		$metadata = stream_get_meta_data($input);
+		$value = null;
 		
-		if(isset($metadata["uri"]))
-			return $wrapper->validate($constraint, $metadata["uri"], $errors);
+		if(is_resource($input))
+		{
+			$metadata = stream_get_meta_data($input);
+			
+			if(isset($metadata["uri"]))
+				$value = $metadata["uri"];
+		}
 		
-		return false;
+		return $wrapper->validate($constraint, $value, $errors);
 	}
 }

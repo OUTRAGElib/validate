@@ -28,4 +28,10 @@ interface ElementInterface
 	 *	Removes all conditions that match what is provided
 	 */
 	public function removeConstraint($constraint);
+	
+	
+	/**
+	 *	Retrieve all conditions that match what is provided
+	 */
+	public function getConstraints();
 }

@@ -136,4 +136,13 @@ class Element extends Component implements ElementInterface
 	public function removeConstraint($constraint)
 	{
 	}
+	
+	
+	/**
+	 *	Retrieve all constraints
+	 */
+	public function getConstraints()
+	{
+		return $this->constraints;
+	}
 }

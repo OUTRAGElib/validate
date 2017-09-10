@@ -84,6 +84,14 @@ class ElementList extends Component implements ElementListInterface
 	 */
 	public function validate($input)
 	{
+		# clear errors on the root only - there are no
+		# requirements to do so on either child elements or
+		# child element lists as errors are either stored on
+		# the element (which is cloned) or on the root 
+		# element list
+		$this->errors = [];
+		
+		# do our validation on the children
 		$this->passed = $input;
 		$this->performValidationIteration($input);
 		$this->passed = [];

@@ -63,7 +63,10 @@ class Symfony implements ConstraintWrapperInterface
 	{
 		# since Symfony supports locales it's probably in the interest to see if we can at
 		# least parse what the client has requested...
-		$locale = Locale::acceptFromHttp($_SERVER["HTTP_ACCEPT_LANGUAGE"]);
+		$locale = null;
+		
+		if(!empty($_SERVER["HTTP_ACCEPT_LANGUAGE"]))
+			$locale = Locale::acceptFromHttp($_SERVER["HTTP_ACCEPT_LANGUAGE"]);
 		
 		if(empty($locale))
 			$locale = "en_GB";

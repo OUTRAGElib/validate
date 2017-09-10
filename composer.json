@@ -26,6 +26,7 @@
         "zendframework/zend-validator": "^2.10",
         "symfony/validator": "^3.3",
         "filp/whoops": "^2.1",
-        "illuminate/validation": "^5.4"
+        "illuminate/validation": "^5.4",
+        "phpunit/phpunit": "^6.4@dev"
     }
 }

@@ -5,7 +5,6 @@ namespace OUTRAGElib\Validate\Tests;
 
 require __DIR__."/../vendor/autoload.php";
 
-use \OUTRAGElib\Validate\Constraint\Required;
 use \OUTRAGElib\Validate\ElementInterface;
 use \OUTRAGElib\Validate\ElementListBuilder;
 use \OUTRAGElib\Validate\ElementListInterface;
@@ -37,7 +36,7 @@ class ElementListBuilderTest extends TestCase
 			],
 			
 			"d[e][g][c]" => [
-				new Required(true),
+				new \OUTRAGElib\Validate\Constraint\Required(true),
 			],
 			
 			"d.e.f" => [
@@ -259,6 +258,152 @@ class ElementListBuilderTest extends TestCase
 					],
 				],
 			],
+		];
+		
+		$this->assertEquals($output, $template->getValues());
+	}
+	
+	
+	/**
+	 *	A test case to test the generation of an ever so slightly more advanced
+	 *	template
+	 *
+	 *	@covers \OUTRAGElib\Validate\Component
+	 *	@covers \OUTRAGElib\Validate\Constraint\Required
+	 *	@covers \OUTRAGElib\Validate\ConstraintAbstract
+	 *	@covers \OUTRAGElib\Validate\Element
+	 *	@covers \OUTRAGElib\Validate\ElementList
+	 *	@covers \OUTRAGElib\Validate\ElementListBuilder
+	 */
+	public function testElementListAdvancedConstruction()
+	{
+		$builder = new ElementListBuilder();
+		
+		$constraints = [
+			new \OUTRAGElib\Validate\Constraint\Required(true),
+		];
+		
+		$template = $builder->getTemplate([
+			"a[b][c]" => $constraints,
+			"e[f][g][]" => $constraints,
+			"x[y][a]" => $constraints,
+			"x[y][b][]" => $constraints,
+			"k[][a]" => $constraints,
+		]);
+		
+		$this->assertInstanceOf(ElementListInterface::class, $template);
+		
+		return $template;
+	}
+	
+	
+	/**
+	 *	A test case to test the generation of an ever so slightly more advanced
+	 *	template
+	 *
+	 *	@depends testElementListAdvancedConstruction
+	 */
+	public function testElementListAdvancedValidationCorrectValues(ElementListInterface $template)
+	{
+		$input = [
+			"a" => [
+				"b" => [
+					"c" => "#",
+				],
+			],
+			
+			"e" => [
+				"f" => [
+					"g" => [ 1 ],
+				],
+			],
+			
+			"x" => [
+				"y" => [
+					"a" => "#",
+					"b" => [ 1 ],
+				],
+			],
+			
+			"k" => [
+				[
+					"a" => 1,
+				]
+			],
+		];
+		
+		$this->assertTrue($template->validate($input));
+		
+		$output = [
+			"a" => [
+				"b" => [
+					"c" => "#",
+				],
+			],
+			
+			"e" => [
+				"f" => [
+					"g" => [ 1 ],
+				],
+			],
+			
+			"x" => [
+				"y" => [
+					"a" => "#",
+					"b" => [ 1 ],
+				],
+			],
+			
+			"k" => [
+				[
+					"a" => 1,
+				]
+			],
+		];
+		
+		$this->assertEquals($output, $template->getValues());
+	}
+	
+	
+	/**
+	 *	A test case to test the generation of an ever so slightly more advanced
+	 *	template
+	 *
+	 *	@depends testElementListAdvancedConstruction
+	 */
+	public function testElementListAdvancedValidationIncorrectValues(ElementListInterface $template)
+	{
+		$input = [
+			"e" => [
+				"f" => [
+					"g" => [],
+				],
+			],
+		];
+		
+		$this->assertFalse($template->validate($input));
+		
+		$output = [
+			"a" => [
+				"b" => [
+					"c" => null,
+				],
+			],
+			
+			"e" => [
+				"f" => [
+					"g" => [],
+				],
+			],
+			
+			"x" => [
+				"y" => [
+					"a" => null,
+					"b" => [],
+				],
+			],
+			
+			"k" => [],
 		];
 		
 		$this->assertEquals($output, $template->getValues());

@@ -3,8 +3,6 @@
 
 namespace OUTRAGElib\Validate;
 
-use \Exception;
-
 
 class ElementListBuilder
 {
@@ -27,7 +25,7 @@ class ElementListBuilder
 	 */
 	protected function parseConstraint(ElementList $template, $index, $constraints)
 	{
-		$tree = $this->parsePropertyName($index);
+		$tree = $template->parsePropertyName($index);
 		
 		if(!count($tree))
 			return false;
@@ -37,80 +35,72 @@ class ElementListBuilder
 		
 		for($i = 0; $i < $branches; ++$i)
 		{
-			if($object->hasElement($tree[$i]))
+			if(strlen($tree[$i]) > 0)
 			{
-				$object = $object->getElement($tree[$i]);
-				
-				if(($i + 1) == $branches)
+				# if we're in this section we're dealing with proceeding down
+				# the element tree
+				# sort of: a > b > c
+				if($object->hasElement($tree[$i]))
 				{
-					if($object instanceof ElementList)
-						throw new Exception("Unexpected ElementList");
+					# okay, we have an element
+					$object = $object->getElement($tree[$i]);
 					
-					if(is_array($constraints))
+					if($branches == ($i + 1) || $branches == ($i + 2) && !strlen($tree[$i + 1]))
 					{
-						foreach($constraints as $constraint)
-							$object->addConstraint($constraint);
+						if($object instanceof ElementList)
+							throw new ElementListBuilderException("Unexpected ElementList");
+						
+						if(is_array($constraints))
+						{
+							foreach($constraints as $constraint)
+								$object->addConstraint($constraint);
+						}
 					}
 					
-					return true;
-				}
-				
-				if(($i + 1) < $branches && $object instanceof Element)
-					throw new Exception("Unexpected Element");
-			}
-			else
-			{
-				if(($i + 1) == $branches)
-				{
-					$object = (new Element($tree[$i]))->appendTo($object);
-					
-					if(is_array($constraints))
-					{
-						foreach($constraints as $constraint)
-							$object->addConstraint($constraint);
-					}
-					
-					return true;
+					if(($i + 1) < $branches && $object instanceof Element)
+						throw new ElementListBuilderException("Unexpected Element");
 				}
 				else
 				{
-					$object = (new ElementList($tree[$i]))->appendTo($object);
+					# okay, we're creating an element
+					if($branches == ($i + 1) || $branches == ($i + 2) && !strlen($tree[$i + 1]))
+					{
+						$object = (new Element($tree[$i]))->appendTo($object);
+						
+						if(is_array($constraints))
+						{
+							foreach($constraints as $constraint)
+								$object->addConstraint($constraint);
+						}
+					}
+					else
+					{
+						$object = (new ElementList($tree[$i]))->appendTo($object);
+					}
 				}
+			}
+			elseif(!strlen($tree[$i]))
+			{
+				# if we get to this point then we're dealing with an element that is
+				# for some reason an array
+				# sort of: a > b > c[] > d
+				#
+				# but the first thing we need to check is to see whether or not we're able
+				# to perform such an action.
+				
+				# we can't have this on the first branch
+				if($i == 0)
+					throw new ElementListBuilderException("Cannot turn the root of the tree into an array");
+				
+				# this purposefully does not support having syntax as 'a[][]' as this is pointless, will
+				# end up with something similar to { a: [[ b ]] } which is yeah, stupid
+				if(!strlen($tree[$i - 1]))
+					throw new ElementListBuilderException("Invalid syntax - arrays do not being configured twice");
+				
+				$object->setIsArray(true);
 			}
 		}
 		
 		return false;
-	}
-	
-	
-	/**
-	 *	Parse the property name/index to determine what we should name it
-	 */
-	protected function parsePropertyName($index)
-	{
-		$tree = [];
-		
-		if(strstr($index, "[") !== false && strstr($index, "]") !== false)
-		{
-			$stack = [];
-			
-			parse_str($index, $stack);
-			
-			if(is_array($stack))
-			{
-				do
-				{
-					$tree[] = key($stack);
-					$stack = array_pop($stack);
-				}
-				while(is_array($stack));
-			}
-		}
-		else
-		{
-			$tree = array_filter(explode(".", $index));
-		}
-		
-		return $tree;
 	}
 }

@@ -199,9 +199,7 @@ class ElementList extends Component implements ElementListInterface
 			{
 				if($element->is_array)
 				{
-					$pair->value = [];
-					
-					if(is_array($pointer))
+					if(is_array($pointer) && count($pointer) > 0)
 					{
 						foreach($pointer as $key => $value)
 						{
@@ -211,6 +209,11 @@ class ElementList extends Component implements ElementListInterface
 							
 							$pairs[] = $copy;
 						}
+					}
+					else
+					{
+						$pair->value = [];
+						$pairs[] = $pair;
 					}
 				}
 				else
@@ -483,5 +486,38 @@ class ElementList extends Component implements ElementListInterface
 			throw new NotFoundException("Invalid property '".$property."'");
 		
 		return $this->list[$property];
+	}
+	
+	
+	/**
+	 *	Parse the property name/index to determine what we should name it
+	 */
+	public function parsePropertyName($index)
+	{
+		$tree = [];
+		
+		if(strstr($index, "[") !== false && strstr($index, "]") !== false)
+		{
+			$stack = [];
+			
+			preg_match("/^(.*?)(\[.*\])?$/", $index, $stack);
+			
+			if(!empty($stack[1]))
+				$tree[] = $stack[1];
+			
+			if(!empty($stack[2]))
+			{
+				preg_match_all("/\[(.*?)\]/", $stack[2], $stack);
+				
+				if(!empty($stack[1]))
+					$tree = array_merge($tree, $stack[1]);
+			}
+		}
+		else
+		{
+			$tree = array_filter(explode(".", $index));
+		}
+		
+		return $tree;
 	}
 }

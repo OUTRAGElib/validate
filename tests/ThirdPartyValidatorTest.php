@@ -5,6 +5,7 @@ namespace OUTRAGElib\Validate\Tests;
 
 require __DIR__."/../vendor/autoload.php";
 
+use \Closure;
 use \OUTRAGElib\Validate\Constraint\Required;
 use \OUTRAGElib\Validate\ConstraintWrapper;
 use \OUTRAGElib\Validate\Element;
@@ -32,6 +33,7 @@ class ThirdPartyValidatorTest extends TestCase
 		
 		$template->append("symfony");
 		$template->append("zend");
+		$template->append("callback");
 		
 		$this->assertNotEmpty($template->children);
 		
@@ -118,6 +120,48 @@ class ThirdPartyValidatorTest extends TestCase
 	
 	
 	/**
+	 *	Add on a zend validator (thankfully this is nice and easy...)
+	 *
+	 *	@covers \OUTRAGElib\Validate\Component
+	 *	@covers \OUTRAGElib\Validate\Constraint\Required
+	 *	@covers \OUTRAGElib\Validate\ConstraintAbstract
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapper\Callback
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapper\OUTRAGElib
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapper\Symfony
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapper\Zend
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapper\Callback
+	 *	@covers \OUTRAGElib\Validate\ConstraintWrapperAbstract
+	 *	@covers \OUTRAGElib\Validate\Element
+	 *	@covers \OUTRAGElib\Validate\ElementList
+	 *	@covers \OUTRAGElib\Validate\Value
+	 *	@covers \OUTRAGElib\Validate\ValueBuilder
+	 *	@depends testElementListConstruction
+	 */
+	public function testElementAddConstraintCallback(ElementListInterface $template)
+	{
+		$this->assertTrue($template->hasElement("callback"));
+		
+		$wrapper = new ConstraintWrapper\Callback();
+		$template->addConstraintWrapper($wrapper);
+		
+		$element = $template->getElement("callback");
+		
+		$element->addConstraint(function($input)
+		{
+			return preg_match("/^abcd$/", $input);
+		});
+		
+		$constraints = $element->getConstraints();
+		
+		$this->assertNotEmpty($constraints);
+		$this->assertNotEmpty($wrapper->filterConstraints($constraints));
+		
+		foreach($wrapper->filterConstraints($constraints) as $constraint)
+			$this->assertInstanceOf(Closure::class, $constraint);
+	}
+	
+	
+	/**
 	 *	Now perform a test to see if we can validate this with empty values
 	 *
 	 *	@covers \OUTRAGElib\Validate\Component
@@ -143,6 +187,7 @@ class ThirdPartyValidatorTest extends TestCase
 		$output = [
 			"symfony" => null,
 			"zend" => null,
+			"callback" => null,
 		];
 		
 		$this->assertEquals($output, $template->getValues());
@@ -171,6 +216,7 @@ class ThirdPartyValidatorTest extends TestCase
 		$input = [
 			"symfony" => "efg",
 			"zend" => "xyz",
+			"callback" => "ghj",
 		];
 		
 		$this->assertFalse($template->validate($input));
@@ -178,6 +224,7 @@ class ThirdPartyValidatorTest extends TestCase
 		$output = [
 			"symfony" => "efg",
 			"zend" => "xyz",
+			"callback" => "ghj",
 		];
 		
 		$this->assertEquals($output, $template->getValues());
@@ -212,6 +259,7 @@ class ThirdPartyValidatorTest extends TestCase
 		$output = [
 			"symfony" => "abcd",
 			"zend" => null,
+			"callback" => null,
 		];
 		
 		$this->assertEquals($output, $template->getValues());
@@ -240,6 +288,7 @@ class ThirdPartyValidatorTest extends TestCase
 		$input = [
 			"symfony" => "abcd",
 			"zend" => "abcd",
+			"callback" => "abcd",
 		];
 		
 		$this->assertTrue($template->validate($input));
@@ -247,6 +296,7 @@ class ThirdPartyValidatorTest extends TestCase
 		$output = [
 			"symfony" => "abcd",
 			"zend" => "abcd",
+			"callback" => "abcd",
 		];
 		
 		$this->assertEquals($output, $template->getValues());

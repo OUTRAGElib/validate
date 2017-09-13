@@ -13,10 +13,22 @@ class ElementListBuilder
 	{
 		$template = new ElementList();
 		
+		if(!empty($input))
+			$this->build($template, $input);
+		
+		return $template;
+	}
+	
+	
+	/**
+	 *	Yet more building
+	 */
+	public function build(ElementList $template, $input = [])
+	{
 		foreach($input as $index => $constraints)
 			$this->parseConstraint($template, $index, $constraints);
 		
-		return $template;
+		return $this;
 	}
 	
 	

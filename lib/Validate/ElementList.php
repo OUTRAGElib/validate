@@ -43,6 +43,18 @@ class ElementList extends Component implements ElementListInterface
 	
 	
 	/**
+	 *	Turn arrays into elements
+	 */
+	public function build($input)
+	{
+		$builder = new ElementListBuilder();
+		$builder->build($this, $input);
+		
+		return $this;
+	}
+	
+	
+	/**
 	 *	Retrieves an child on this template level.
 	 */
 	public function getElement($component)

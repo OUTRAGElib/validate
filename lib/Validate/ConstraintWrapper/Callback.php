@@ -17,7 +17,7 @@ class Callback extends ConstraintWrapperAbstract
 	 */
 	public function isAvailable()
 	{
-		return class_exists('\Closure');
+		return class_exists(Closure::class);
 	}
 	
 	

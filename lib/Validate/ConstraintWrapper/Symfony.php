@@ -19,7 +19,7 @@ class Symfony implements ConstraintWrapperInterface
 	 */
 	public function isAvailable()
 	{
-		return class_exists('\Symfony\Component\Validator\Constraint');
+		return class_exists(Constraint::class);
 	}
 	
 	

@@ -15,7 +15,7 @@ class Zend extends ConstraintWrapperAbstract
 	 */
 	public function isAvailable()
 	{
-		return interface_exists('\Zend\Validator\ValidatorInterface');
+		return interface_exists(ValidatorInterface::class);
 	}
 	
 	

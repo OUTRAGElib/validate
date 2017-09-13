@@ -15,7 +15,7 @@ class OUTRAGElib extends ConstraintWrapperAbstract
 	 */
 	public function isAvailable()
 	{
-		return interface_exists('\OUTRAGElib\Validate\ConstraintInterface');
+		return interface_exists(ConstraintInterface::class);
 	}
 	
 	

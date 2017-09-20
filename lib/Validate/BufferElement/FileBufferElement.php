@@ -4,9 +4,9 @@
 namespace OUTRAGElib\Validate\BufferElement;
 
 use \Exception;
-use \OUTRAGElib\Validate\BufferElement\Provider;
+use \OUTRAGElib\Validate\BufferElement\File\Provider;
+use \OUTRAGElib\Validate\BufferElement\File\Storage\StorageTemporary;
 use \OUTRAGElib\Validate\BufferElementAbstract;
-use \OUTRAGElib\Validate\BufferElement\Storage\StorageTemporary;
 
 
 class FileBufferElement extends BufferElementAbstract

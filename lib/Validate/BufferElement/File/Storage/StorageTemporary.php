@@ -1,15 +1,13 @@
 <?php
 
 
-namespace OUTRAGElib\Validate\BufferElement\Storage;
+namespace OUTRAGElib\Validate\BufferElement\File\Storage;
 
 use \Exception;
-use \League\Flysystem\Filesystem;
-use \League\Flysystem\Memory\MemoryAdapter;
-use \Twistor\FlysystemStreamWrapper;
+use \OUTRAGElib\Filesystem\TemporaryFilesystemStreamWrapper;
 
 
-class StorageMemoryFilesystem implements StorageInterface
+class StorageTemporary implements StorageInterface
 {
 	/**
 	 *	Retrieve the context that has been generated
@@ -36,10 +34,7 @@ class StorageMemoryFilesystem implements StorageInterface
 		if(in_array($protocol, stream_get_wrappers()))
 			return $protocol;
 		
-		$filesystem = new Filesystem(new MemoryAdapter());
-		
-		if(!FlysystemStreamWrapper::register($protocol, $filesystem))
-			throw new Exception("Unable to register stream wrapper");
+		stream_wrapper_register($protocol, TemporaryFilesystemStreamWrapper::class);
 		
 		return $protocol;
 	}

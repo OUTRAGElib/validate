@@ -1,7 +1,7 @@
 <?php
 
 
-namespace OUTRAGElib\Validate\BufferElement\Storage;
+namespace OUTRAGElib\Validate\BufferElement\File\Storage;
 
 
 interface StorageInterface

@@ -1,10 +1,10 @@
 <?php
 
 
-namespace OUTRAGElib\Validate\BufferElement\Provider;
+namespace OUTRAGElib\Validate\BufferElement\File\Provider;
 
 use \Exception;
-use \OUTRAGElib\Validate\BufferElement\Storage\StorageInterface;
+use \OUTRAGElib\Validate\BufferElement\File\Storage\StorageInterface;
 use \OUTRAGElib\Validate\ElementInterface;
 
 

@@ -6,8 +6,7 @@
         "outragelib/delegator": "dev-master",
         "outragelib/objectlist": "dev-master",
         "guzzlehttp/guzzle": "~6.0",
-        "league/flysystem-memory": "^1.0",
-        "twistor/flysystem-stream-wrapper": "^1.0"
+        "outragelib/fs-temp": "dev-master"
     },
     "license": "MIT",
     "authors": [

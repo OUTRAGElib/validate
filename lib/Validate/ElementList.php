@@ -11,6 +11,18 @@ use \OUTRAGElib\Structure\NotFoundException;
 class ElementList extends Component implements ElementListInterface
 {
 	/**
+	 *	Implement the constraint wrapper functionality
+	 */
+	use ConstraintWrapperTrait;
+	
+	
+	/**
+	 *	Implement the transformer wrapper functionality
+	 */
+	use TransformerWrapperTrait;
+	
+	
+	/**
 	 *	We shall use this to store values generated from validated input methods.
 	 */
 	public $values = [];

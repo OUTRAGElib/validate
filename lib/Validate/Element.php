@@ -10,10 +10,15 @@ use \OUTRAGElib\Validate\ErrorInterface;
 class Element extends Component implements ElementInterface
 {
 	/**
-	 *	Stores a list of all conditions that this element depends on for a
-	 *	successful validation.
+	 *	Include constraint functionality
 	 */
-	protected $constraints = [];
+	use ConstraintTrait;
+	
+	
+	/**
+	 *	Include transformer functionality
+	 */
+	use TransformerTrait;
 	
 	
 	/**
@@ -41,25 +46,46 @@ class Element extends Component implements ElementInterface
 		if(!$this->is_array && is_array($input))
 			$input = null;
 		
-		foreach($this->root->getConstraintWrappers() as $wrapper)
+		# if we have any transformers applied, we need to go ahead and transform
+		# our transformers
+		if(count($this->transformers) > 0)
 		{
-			# a cool feature of this is that we're able to just stick any type
-			# of conditional in and as long as the constraint wrapper is available
-			# it will just go ahead and test it - how fun, right?
-			foreach($wrapper->filterConstraints($this->constraints) as $constraint)
+			foreach($this->root->getTransformerWrappers() as $wrapper)
 			{
-				$errors = [];
-				$result = $this->validateConstraint($wrapper, $constraint, $input, $errors);
-				
-				if($result == false)
+				# a cool feature of this is that we're able to just stick any type
+				# of conditional in and as long as the constraint wrapper is available
+				# it will just go ahead and test it - how fun, right?
+				foreach($wrapper->filterTransformers($this->transformers) as $transformer)
 				{
-					if(is_object($context) && $context instanceof ErrorInterface)
+					if(($result = $wrapper->transform($transformer, $input)) !== null)
+						$input = $result;
+				}
+			}
+		}
+		
+		# now properly validate stuff
+		if(count($this->constraints) > 0)
+		{
+			foreach($this->root->getConstraintWrappers() as $wrapper)
+			{
+				# a cool feature of this is that we're able to just stick any type
+				# of conditional in and as long as the constraint wrapper is available
+				# it will just go ahead and test it - how fun, right?
+				foreach($wrapper->filterConstraints($this->constraints) as $constraint)
+				{
+					$errors = [];
+					$result = $this->validateConstraint($wrapper, $constraint, $input, $errors);
+					
+					if($result == false)
 					{
-						# it's best for the errors to always be arrays
-						if(is_array($errors))
+						if(is_object($context) && $context instanceof ErrorInterface)
 						{
-							foreach($errors as $error)
-								$context->triggerError($this, $error);
+							# it's best for the errors to always be arrays
+							if(is_array($errors))
+							{
+								foreach($errors as $error)
+									$context->triggerError($this, $error);
+							}
 						}
 					}
 				}
@@ -109,40 +135,5 @@ class Element extends Component implements ElementInterface
 		}
 		
 		throw new Exception("Method not found");
-	}
-	
-	
-	/**
-	 *	Add a validator
-	 */
-	public function addConstraint($constraint)
-	{
-		$this->constraints[] = $constraint;
-		return $this;
-	}
-	
-	
-	/**
-	 *	Checks to see if this validator is in use
-	 */
-	public function hasConstraint($constraint)
-	{
-	}
-	
-	
-	/**
-	 *	Removes all conditions that match what is provided
-	 */
-	public function removeConstraint($constraint)
-	{
-	}
-	
-	
-	/**
-	 *	Retrieve all constraints
-	 */
-	public function getConstraints()
-	{
-		return $this->constraints;
 	}
 }

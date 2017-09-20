@@ -17,6 +17,12 @@ abstract class Component implements ComponentInterface
 	
 	
 	/**
+	 *	Implement error handling functionality
+	 */
+	use ErrorTrait;
+	
+	
+	/**
 	 *	Store all of our family trees here.
 	 */
 	public $parent = null;
@@ -38,18 +44,6 @@ abstract class Component implements ComponentInterface
 	 *	Is this an array?
 	 */
 	public $is_array = false;
-	
-	
-	/**
-	 *	We'll store all errors here as well.
-	 */
-	public $errors = [];
-	
-	
-	/**
-	 *	What constraint wrappers are currently in use?
-	 */
-	protected $constraint_wrappers = [];
 	
 	
 	/**
@@ -172,83 +166,6 @@ abstract class Component implements ComponentInterface
 	{
 		$element->append($this);
 		return $this;
-	}
-	
-	
-	/**
-	 *	Add an error to this component, and if a parent somewhere exists,
-	 *	to the parent form as well.
-	 */
-	public function triggerError(ElementInterface $context, $message = null)
-	{
-		$error = new ErrorMessage();
-		
-		$error->name = $this->name ?: $context->name;
-		$error->context = $context;
-		$error->message = $message;
-		
-		$context->errors[] = $error;
-		
-		if($context->root instanceof ElementList)
-			$context->root->errors[] = $error;
-		
-		return $this;
-	}
-	
-	
-	/**
-	 *	Retrieve errors against this element.
-	 */
-	public function getErrors($named = true)
-	{
-		if(!$named)
-			return $this->errors;
-		
-		$errors = [];
-		
-		foreach($this->errors as $error)
-		{
-			if(!isset($errors[$error->name]))
-				$errors[$error->name] = [];
-			
-			$errors[$error->name][] = $error->message;
-		}
-		
-		return $errors; 
-	}
-	
-	
-	/**
-	 *	Adds a constraint wrapper to the validation request
-	 */
-	public function addConstraintWrapper(ConstraintWrapperInterface $wrapper)
-	{
-		$this->constraint_wrappers[] = $wrapper;
-		return $this;
-	}
-	
-	
-	/**
-	 *	Retrieves all constraint wrappers
-	 */
-	public function getConstraintWrappers()
-	{
-		# okay, so if the constraint wrappers are empty, we're going to have to
-		# populate them, fun times...
-		# we'll just for the moment use the four below - let's see how nice this will end up
-		if(empty($this->constraint_wrappers))
-		{
-			foreach([ "OUTRAGElib", "Callback", "Symfony", "Zend" ] as $name)
-			{
-				$class = '\OUTRAGElib\Validate\ConstraintWrapper\\'.$name;
-				$object = new $class();
-				
-				if($object->isAvailable())
-					$this->constraint_wrappers[] = $object;
-			}
-		}
-		
-		return $this->constraint_wrappers;
 	}
 	
 	

@@ -32,16 +32,4 @@ interface ComponentInterface extends ErrorInterface
 	 *	Appends this element to a input template.
 	 */
 	public function appendTo(ElementList $element);
-	
-	
-	/**
-	 *	Adds a constraint wrapper to the validation request
-	 */
-	public function addConstraintWrapper(ConstraintWrapperInterface $wrapper);
-	
-	
-	/**
-	 *	Retrieves all constraint wrappers
-	 */
-	public function getConstraintWrappers();
 }

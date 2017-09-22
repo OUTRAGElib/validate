@@ -23,6 +23,18 @@ abstract class Component implements ComponentInterface
 	
 	
 	/**
+	 *	Implement the constraint wrapper functionality
+	 */
+	use ConstraintWrapperTrait;
+	
+	
+	/**
+	 *	Implement the transformer wrapper functionality
+	 */
+	use TransformerWrapperTrait;
+	
+	
+	/**
 	 *	Store all of our family trees here.
 	 */
 	public $parent = null;
@@ -115,6 +127,9 @@ abstract class Component implements ComponentInterface
 	 */
 	public function getter_root()
 	{
+		if(!$this->parent)
+			return $this;
+		
 		$pointer = $this->parent;
 		
 		while($pointer->parent !== null)

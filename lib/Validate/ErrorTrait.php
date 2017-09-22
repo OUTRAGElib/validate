@@ -3,6 +3,8 @@
 
 namespace OUTRAGElib\Validate;
 
+use \OUTRAGElib\Validate\Error\ErrorMessage;
+
 
 trait ErrorTrait
 {

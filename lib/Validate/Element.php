@@ -32,6 +32,10 @@ class Element extends Component implements ElementInterface
 	 */
 	public function validate($input, $context = null)
 	{
+		# if no context is passed, stick all errors on this element
+		if(is_null($context))
+			$context = $this;
+		
 		# first thing we need to check - do we have a root? we should have, regardless
 		# of whether or not we're testing this within the bounds of a form
 		if(!$this->root)
@@ -93,6 +97,19 @@ class Element extends Component implements ElementInterface
 		}
 		
 		return $input;
+	}
+	
+	
+	/**
+	 *	Tests are similar to validation calls - but instead of returning the value
+	 *	which may have been changed somewhere, it just returns a boolean. How cute!
+	 */
+	public function test($input)
+	{
+		$this->errors = [];
+		$this->validate($input, $this);
+		
+		return count($this->errors) == 0;
 	}
 	
 	

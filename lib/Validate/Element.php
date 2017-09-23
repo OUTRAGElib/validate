@@ -28,6 +28,19 @@ class Element extends Component implements ElementInterface
 	
 	
 	/**
+	 *	Tests are similar to validation calls - but instead of returning the value
+	 *	which may have been changed somewhere, it just returns a boolean. How cute!
+	 */
+	public function test($input)
+	{
+		$this->errors = [];
+		$this->validate($input, $this);
+		
+		return count($this->errors) == 0;
+	}
+	
+	
+	/**
 	 *	Perform a validation on this element based on the condition.
 	 */
 	public function validate($input, $context = null)
@@ -101,19 +114,6 @@ class Element extends Component implements ElementInterface
 	
 	
 	/**
-	 *	Tests are similar to validation calls - but instead of returning the value
-	 *	which may have been changed somewhere, it just returns a boolean. How cute!
-	 */
-	public function test($input)
-	{
-		$this->errors = [];
-		$this->validate($input, $this);
-		
-		return count($this->errors) == 0;
-	}
-	
-	
-	/**
 	 *	Validate a constraint
 	 */
 	protected function validateConstraint(ConstraintWrapperInterface $wrapper, $constraint, $input, &$errors = [])
@@ -151,6 +151,6 @@ class Element extends Component implements ElementInterface
 				return $this->addConstraint($object);
 		}
 		
-		throw new Exception("Method not found");
+		throw new Exception("Method '".$constraint."' not found");
 	}
 }

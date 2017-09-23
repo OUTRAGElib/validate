@@ -4,7 +4,6 @@
 namespace OUTRAGElib\Validate;
 
 use \Exception;
-use \Traversable;
 use \OUTRAGElib\Structure\NotFoundException;
 
 
@@ -96,152 +95,11 @@ class ElementList extends Component implements ElementListInterface
 	 */
 	public function validate($input)
 	{
-		# clear errors on the root only - there are no
-		# requirements to do so on either child elements or
-		# child element lists as errors are either stored on
-		# the element (which is cloned) or on the root 
-		# element list
-		$this->errors = [];
-		
-		# do our validation on the children
-		$this->passed = $input;
-		$this->performValidationIteration($input);
-		$this->passed = [];
+		# do our validation
+		$iterator = new ElementListValidator($this);
+		$iterator->validate($input);
 		
 		return count($this->errors) == 0;
-	}
-	
-	
-	/**
-	 *	Wrapper to perform validation and return some values, if needed.
-	 */
-	public function performValidationIteration($input, $tree = [])
-	{
-		if(!is_array($input))
-		{
-			if($input instanceof Traversable)
-				$input = iterator_to_array($input);
-		}
-		
-		if(!is_array($input))
-			return $this->values = array();
-		
-		if(method_exists($this, "prevalidate"))
-		{
-			if($this->prevalidate($input) === false)
-				return $this->values = array();
-		}
-		
-		return $this->values = $this->iterate($input, $tree);
-	}
-	
-	
-	/**
-	 *	Iterate through a set of values and do the validation.
-	 */
-	protected function iterate($input, $tree = [])
-	{
-		# now for the fun bit of iterating through this mess and doing our validation
-		$offset = count($tree);
-		$pairs = [];
-				
-		# iterate through our defined elements
-		foreach($this->children as $element)
-		{
-			$tree[] = $element;
-			
-			# it's probably a good idea to locate the actual value we want to
-			# manipulate here
-			$pointer = $input;
-			
-			if(!is_null($pointer) && $count = count($tree))
-			{
-				for($i = $offset; $i < $count; ++$i)
-				{
-					$name = (string) $tree[$i];
-					
-					if(!$name)
-						continue;
-					
-					if($i == $count)
-						break;
-					
-					if(isset($pointer[$name]))
-					{
-						$pointer = &$pointer[$name];
-						continue;
-					}
-					
-					$pointer = null;
-					break;
-				}
-			}
-			
-			# do different things depending on whether this is a template - or not
-			$pair = new Value();
-			
-			$pair->tree = $tree;
-			$pair->element = $element;
-			
-			if($element instanceof ElementList)
-			{
-				if($element->is_array)
-				{
-					$pair->value = [];
-					
-					if(is_array($pointer))
-					{
-						foreach($pointer as $key => $value)
-						{
-							$tree[] = $key;
-							$pair->value[$key] = $element->duplicate()->performValidationIteration($value, $tree);
-							
-							array_pop($tree);
-						}
-					}
-				}
-				else
-				{
-					$pair->value = $element->duplicate()->performValidationIteration($pointer ?: [], $tree);
-				}
-				
-				$pairs[] = $pair;
-			}
-			else
-			{
-				if($element->is_array)
-				{
-					if(is_array($pointer) && count($pointer) > 0)
-					{
-						foreach($pointer as $key => $value)
-						{
-							$copy = clone $pair;
-							$copy->tree[] = $key;
-							$copy->value = $element->validate($value, $copy);
-							
-							$pairs[] = $copy;
-						}
-					}
-					else
-					{
-						$pair->value = [];
-						$pairs[] = $pair;
-					}
-				}
-				else
-				{
-					$pair->value = $element->validate($pointer, $pair);
-					$pairs[] = $pair;
-				}
-			}
-			
-			unset($pair);
-			unset($pointer);
-			
-			array_pop($tree);
-		}
-		
-		return $pairs;
 	}
 	
 	

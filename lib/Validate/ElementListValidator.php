@@ -58,7 +58,7 @@ class ElementListValidator
 		# these values before we proceed - this is where the prevalidator comes in!
 		if(method_exists($template, "prevalidate"))
 		{
-			if($this->prevalidate($input) === false)
+			if($template->prevalidate($input) === false)
 				return [];
 		}
 		

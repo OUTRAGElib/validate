@@ -45,13 +45,18 @@ class ElementListValidator
 	 */
 	protected function iterate(ElementListInterface $template, $input, $tree = [])
 	{
-		# a lovely bit of safeguarding
+		# a lovely bit of safeguarding - i'm going to be rather foolish here and
+		# presume that if something implements traversable, AND has a function called
+		# toArray, this would produce an array of the object we're wanting. let's hope
+		# that this works as intended...
 		if(!is_array($input))
 		{
-			if($input instanceof Traversable == false)
+			if($input instanceof Traversable && method_exists($input, "toArray"))
+				$input = $input->toArray();
+			elseif($input instanceof Traversable)
+				$input = iterator_to_array($input);
+			else
 				return [];
-			
-			$input = iterator_to_array($input);
 		}
 		
 		# we might want to check to see whether or not we can actually validate

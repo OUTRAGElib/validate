@@ -10,30 +10,37 @@ use \ReflectionClass;
 class ConstraintFactory
 {
 	/**
-	 *	Constraint
+	 *	Class
 	 */
-	protected $constraint = null;
+	protected $class = null;
 	
 	
 	/**
 	 *	Creates an instance of a constraint from a string name
 	 */
-	public function __construct($constraint, $arguments = [])
+	public function __construct($constraint)
 	{
-		$class = '\OUTRAGElib\Validate\Constraint\\'.ucwords($constraint);
-		
-		if(class_exists($class))
-			$this->constraint = (new ReflectionClass($class))->newInstanceArgs($arguments);
-		
-		return null;
+		$this->class = '\OUTRAGElib\Validate\Constraint\\'.ucwords($constraint);
+	}
+	
+	
+	/**
+	 *	Retrieves class name
+	 */
+	public function getClass()
+	{
+		return $this->class;
 	}
 	
 	
 	/**
 	 *	Retrieves the constraint
 	 */
-	public function getConstraint()
+	public function getConstraint($arguments = [])
 	{
-		return $this->constraint;
+		if(class_exists($this->class))
+			return (new ReflectionClass($this->class))->newInstanceArgs($arguments);
+		
+		return null;
 	}
 }

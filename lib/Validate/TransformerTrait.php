@@ -28,6 +28,15 @@ trait TransformerTrait
 	 */
 	public function hasTransformer($transformer)
 	{
+		foreach($this->transformers as $item)
+		{
+			if(is_string($transformer) && is_a($item, $transformer))
+				return true;
+			elseif(is_object($transformer) && $transformer === $item)
+				return true;
+		}
+		
+		return false;
 	}
 	
 	
@@ -36,14 +45,36 @@ trait TransformerTrait
 	 */
 	public function removeTransformer($transformer)
 	{
+		foreach($this->transformers as $index => $item)
+		{
+			if(is_string($transformer) && is_a($item, $transformer))
+				unset($this->transformers[$index]);
+			elseif(is_object($transformer) && $transformer === $item)
+				unset($this->transformers[$index]);
+		}
+		
+		return $this;
 	}
 	
 	
 	/**
 	 *	Retrieve all transformers
 	 */
-	public function getTansformers()
+	public function getTransformers($transformer = null)
 	{
-		return $this->transformers;
+		if(is_null($transformer))
+			return $this->transformers;
+		
+		$list = [];
+		
+		foreach($this->transformers as $item)
+		{
+			if(is_string($transformer) && is_a($item, $transformer))
+				$list[] = $item;
+			elseif(is_object($transformer) && $transformer === $item)
+				$list[] = $item;
+		}
+		
+		return $list;
 	}
 }

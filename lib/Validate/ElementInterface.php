@@ -33,5 +33,29 @@ interface ElementInterface
 	/**
 	 *	Retrieve all conditions that match what is provided
 	 */
-	public function getConstraints();
+	public function getConstraints($constraint = null);
+	
+	
+	/**
+	 *	Add a transformer
+	 */
+	public function addTransformer($constraint);
+	
+	
+	/**
+	 *	Checks to see if this transformer is in use
+	 */
+	public function hasTransformer($constraint);
+	
+	
+	/**
+	 *	Removes all transformers that match what is provided
+	 */
+	public function removeTransformer($constraint);
+	
+	
+	/**
+	 *	Retrieve all transformers that match what is provided
+	 */
+	public function getTransformers($constraint = null);
 }

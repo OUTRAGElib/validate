@@ -145,10 +145,26 @@ class Element extends Component implements ElementInterface
 		}
 		else
 		{
-			$factory = new ConstraintFactory($constraint, $arguments);
+			$factory = new ConstraintFactory($constraint);
+			$output = $factory->getClass();
 			
-			if($object = $factory->getConstraint())
-				return $this->addConstraint($object);
+			if(class_exists($output))
+			{
+				if($list = $this->getConstraints($output))
+				{
+					foreach($list as $item)
+					{
+						if(method_exists($item, "init"))
+							call_user_func_array([ $item, "init" ], $arguments);
+					}
+				}
+				else
+				{
+					$this->addConstraint($factory->getConstraint($arguments));
+				}
+				
+				return $this;
+			}
 		}
 		
 		throw new Exception("Method '".$constraint."' not found");

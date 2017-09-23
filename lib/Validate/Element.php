@@ -45,14 +45,14 @@ class Element extends Component implements ElementInterface
 	 */
 	public function validate($input, $context = null)
 	{
-		# if no context is passed, stick all errors on this element
-		if(is_null($context))
-			$context = $this;
-		
 		# first thing we need to check - do we have a root? we should have, regardless
 		# of whether or not we're testing this within the bounds of a form
 		if(!$this->root)
 			throw new Exception("Root element not found");
+		
+		# if no context is passed, stick all errors on this element
+		if(is_null($context))
+			$context = $this;
 		
 		if($input === null)
 			$input = $this->default;
@@ -152,5 +152,24 @@ class Element extends Component implements ElementInterface
 		}
 		
 		throw new Exception("Method '".$constraint."' not found");
+	}
+	
+	
+	/**
+	 *	Set the default value
+	 */
+	public function setDefault($default)
+	{
+		$this->default = $default;
+		return $this;
+	}
+	
+	
+	/**
+	 *	Retrieve the default value
+	 */
+	public function getDefault()
+	{
+		return $this->default;
 	}
 }

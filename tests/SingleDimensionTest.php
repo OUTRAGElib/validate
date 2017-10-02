@@ -76,9 +76,9 @@ class SingleDimensionTest extends TestCase
 		$element = $template->getElement("alpha");
 		$element->required(true);
 		
-		$this->assertNotEmpty($element->constraints);
+		$this->assertNotEmpty($element->getConstraints());
 		
-		foreach($element->constraints as $constraint)
+		foreach($element->getConstraints() as $constraint)
 		{
 			$this->assertInstanceOf(Required::class, $constraint);
 			$this->assertTrue($constraint->test(1));
@@ -109,9 +109,9 @@ class SingleDimensionTest extends TestCase
 		$element = $template->getElement("bravo");
 		$element->addConstraint(new Required(true));
 		
-		$this->assertNotEmpty($element->constraints);
+		$this->assertNotEmpty($element->getConstraints());
 		
-		foreach($element->constraints as $constraint)
+		foreach($element->getConstraints() as $constraint)
 		{
 			$this->assertInstanceOf(Required::class, $constraint);
 			$this->assertTrue($constraint->test(1));

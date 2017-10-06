@@ -4,6 +4,7 @@
 namespace OUTRAGElib\Validate\BufferElement\File\Storage;
 
 use \Exception;
+use \OUTRAGElib\Filesystem\StreamWrapper\MimeTypeInterface;
 use \OUTRAGElib\Filesystem\TemporaryFilesystemStreamWrapper;
 
 
@@ -19,7 +20,19 @@ class StorageTemporary implements StorageInterface
 		if(empty($file_type))
 			$file_type = "application/octet-stream";
 		
-		return fopen($protocol."://temp/upload/".$file_type."/".$file_name, $mode);
+		$fp = fopen($protocol."://temp/".uniqid()."/".$file_type."/".$file_name, $mode);
+		
+		$metadata = stream_get_meta_data($fp);
+		
+		if(is_object($metadata["wrapper_data"]))
+		{
+			$stream = $metadata["wrapper_data"];
+			
+			if($stream instanceof MimeTypeInterface)
+				$stream->setMimeType($file_type);
+		}
+		
+		return $fp;
 	}
 	
 	

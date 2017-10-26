@@ -4,6 +4,8 @@
 namespace OUTRAGElib\Validate\BufferElement\File\Provider;
 
 use \Exception;
+use \OUTRAGElib\FileStream\File;
+use \OUTRAGElib\FileStream\Stream;
 use \OUTRAGElib\Validate\BufferElement\File\Storage\StorageInterface;
 use \OUTRAGElib\Validate\ElementInterface;
 
@@ -35,7 +37,7 @@ class FileUpload implements ProviderInterface
 	/**
 	 *	Retrieve the context that has been generated
 	 */
-	public function getContext($input)
+	public function getFile($input)
 	{
 		# retrieve some stuff
 		$data = [
@@ -60,7 +62,7 @@ class FileUpload implements ProviderInterface
 			# great, now get our pointer
 			if(is_resource($sink))
 			{
-				$fp = $this->storage->open($file_name);
+				$fp = $this->storage->open($data["name"]);
 				
 				rewind($sink);
 				stream_copy_to_stream($sink, $fp);

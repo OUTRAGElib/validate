@@ -14,12 +14,9 @@ class Temporary implements StorageInterface
 	 */
 	public function open($filename, $mode = "w+")
 	{
-		$protocol = $this->getProtocol();
+		$path = sprintf("%s://%s/%s", $this->getProtocol(), "temp/upload/".sha1(uniqid()), $filename);
 		
-		if(empty($file_type))
-			$file_type = "application/octet-stream";
-		
-		return fopen($protocol."://temp/upload/".sha1(uniqid())."/".$filename, $mode);
+		return fopen($path, $mode);
 	}
 	
 	

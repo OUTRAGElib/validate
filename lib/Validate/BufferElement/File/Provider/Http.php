@@ -5,18 +5,14 @@ namespace OUTRAGElib\Validate\BufferElement\File\Provider;
 
 use \Exception;
 use \GuzzleHttp\Client;
+use \OUTRAGElib\FileStream\File;
+use \OUTRAGElib\FileStream\Stream;
 use \OUTRAGElib\Validate\BufferElement\File\Storage\StorageInterface;
 use \OUTRAGElib\Validate\ElementInterface;
 
 
-class ProviderHttp implements ProviderInterface
+class Http implements ProviderInterface
 {
-	/**
-	 *	Store the element
-	 */
-	protected $element = null;
-	
-	
 	/**
 	 *	Store the storage helper
 	 */
@@ -26,9 +22,8 @@ class ProviderHttp implements ProviderInterface
 	/**
 	 *	Populate the provider with input to parse
 	 */
-	public function __construct(ElementInterface $element, StorageInterface $storage)
+	public function __construct(StorageInterface $storage)
 	{
-		$this->element = $element;
 		$this->storage = $storage;
 	}
 	
@@ -36,7 +31,7 @@ class ProviderHttp implements ProviderInterface
 	/**
 	 *	Retrieve the context that has been generated
 	 */
-	public function getContext($input)
+	public function getFile($input)
 	{
 		$sink = fopen("php://temp", "w+");
 		
@@ -84,16 +79,28 @@ class ProviderHttp implements ProviderInterface
 		if($response->hasHeader("Content-Type"))
 			$file_type = $response->getHeader("Content-Type")[0];
 		
-		# great, now get our pointer
-		$fp = $this->storage->getContext($file_name, $file_type);
+		# something that might not necessarily matter to anyone else apart from the
+		# darling developer, is the requirement for temporary paths to be at least like
+		# what has been downloaded from the server...
+		$fp = $this->storage->open($file_name);
 		
-		if(!is_resource($fp))
-			return null;
-		
+		rewind($sink);
 		stream_copy_to_stream($sink, $fp);
 		fclose($sink);
+		
 		rewind($fp);
 		
-		return $fp;
+		# now, we can finally start building a stream
+		$stream = new Stream();
+		$stream->setFilePointer($fp);
+		
+		# and now build the file object
+		$file = new File();
+		
+		$file->setStream($stream);
+		$file->setClientFilename($file_name);
+		$file->setClientMediaType($file_type);
+		
+		return $file;
 	}
 }

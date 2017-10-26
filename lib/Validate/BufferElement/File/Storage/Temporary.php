@@ -7,19 +7,19 @@ use \Exception;
 use \OUTRAGElib\Filesystem\TemporaryFilesystemStreamWrapper;
 
 
-class StorageTemporary implements StorageInterface
+class Temporary implements StorageInterface
 {
 	/**
 	 *	Retrieve the context that has been generated
 	 */
-	public function getContext($file_name, $file_type = null, $mode = "w+")
+	public function open($filename, $mode = "w+")
 	{
 		$protocol = $this->getProtocol();
 		
 		if(empty($file_type))
 			$file_type = "application/octet-stream";
 		
-		return fopen($protocol."://temp/upload/".$file_type."/".$file_name, $mode);
+		return fopen($protocol."://temp/upload/".sha1(uniqid())."/".$filename, $mode);
 	}
 	
 	

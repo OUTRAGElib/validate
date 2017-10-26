@@ -8,7 +8,7 @@ use \OUTRAGElib\Validate\BufferElement\File\Storage\StorageInterface;
 use \OUTRAGElib\Validate\ElementInterface;
 
 
-class ProviderFileUpload implements ProviderInterface
+class FileUpload implements ProviderInterface
 {
 	/**
 	 *	Store the element
@@ -37,32 +37,60 @@ class ProviderFileUpload implements ProviderInterface
 	 */
 	public function getContext($input)
 	{
-		$file_type = $this->parseFileArray($this->element, $input, "type");
-		$file_name = $this->parseFileArray($this->element, $input, "name");
-		$tmp_name = $this->parseFileArray($this->element, $input, "tmp_name");
+		# retrieve some stuff
+		$data = [
+			"type" => null,
+			"name" => null,
+			"tmp_name" => null,
+			"error" => null,
+		];
+		
+		foreach($data as $key => $value)
+			$data[$key] = $this->parseFileArray($this->element, $input, $key);
 		
 		# okay, now we have everything, we're going to open the temp file (and
 		# not copy it over because this isn't required) - i'm hoping that this
 		# sort of naming scheme won't cause any issues with filters and the like?
-		if(is_null($tmp_name) || !file_exists($tmp_name))
-			return null;
+		$fp = null;
 		
-		$tmp_fp = fopen($tmp_name, "r");
+		if(!is_null($data["tmp_name"]) || file_exists($data["tmp_name"]))
+		{
+			$sink = fopen($data["tmp_name"], "r");
+			
+			# great, now get our pointer
+			if(is_resource($sink))
+			{
+				$fp = $this->storage->open($file_name);
+				
+				rewind($sink);
+				stream_copy_to_stream($sink, $fp);
+				fclose($sink);
+				
+				rewind($fp);
+			}
+		}
 		
-		if(!is_resource($tmp_fp))
-			return null;
+		# then, we need to build a stream
+		$stream = new Stream();
+		$stream->setFilePointer($fp);
 		
-		# great, now get our pointer
-		$fp = $this->storage->getContext($file_name, $file_type);
+		# and now build the file object
+		$file = new File();
+		$file->setStream($stream);
 		
-		if(!is_resource($fp))
-			return null;
+		if(isset($fp))
+		{
+			if(isset($data["type"]))
+				$file->setClientMediaType($data["type"]);
+			
+			if(isset($data["name"]))
+				$file->setClientFilename($data["name"]);
+			
+			if(isset($data["error"]))
+				$file->setError($data["error"]);
+		}
 		
-		stream_copy_to_stream($tmp_fp, $fp);
-		fclose($tmp_fp);
-		rewind($fp);
-		
-		return $fp;
+		return $file;
 	}
 	
 	

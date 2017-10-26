@@ -5,6 +5,8 @@ namespace OUTRAGElib\Validate\Tests;
 
 require __DIR__."/../vendor/autoload.php";
 
+use \OUTRAGElib\FileStream\FileInterface;
+use \OUTRAGElib\FileStream\StreamInterface;
 use \OUTRAGElib\Validate\BufferElement\StringBufferElement;
 use \OUTRAGElib\Validate\Constraint\Required;
 use \OUTRAGElib\Validate\Element;
@@ -108,7 +110,9 @@ class StringBufferElementTest extends TestCase
 		
 		$values = $template->getValues();
 		
-		$this->assertInternalType("resource", $values["buffer"]);
-		$this->assertEquals($input["buffer"], stream_get_contents($values["buffer"]));
+		$this->assertInstanceOf(FileInterface::class, $values["buffer"]);
+		$this->assertInstanceOf(StreamInterface::class, $values["buffer"]->getStream());
+		
+		$this->assertEquals($input["buffer"], $values["buffer"]->getStream()->getContents());
 	}
 }

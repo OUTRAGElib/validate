@@ -3,23 +3,13 @@
 
 namespace OUTRAGElib\Validate;
 
+use \Exception;
+use \Psr\Http\Message\StreamInterface as PsrStreamInterface;
+use \Psr\Http\Message\UploadedFileInterface as PsrUploadedFileInterface;
+
 
 class BufferElementAbstract extends Element implements BufferElementInterface
 {
-	/**
-	 *	Perform a validation on this element based on the condition.
-	 */
-	public function validate($input, $context = null)
-	{
-		$input = parent::validate($input, $context);
-		
-		if(!is_resource($input))
-			return null;
-		
-		return $input;
-	}
-	
-	
 	/**
 	 *	Validate a constraint.
 	 *
@@ -32,16 +22,27 @@ class BufferElementAbstract extends Element implements BufferElementInterface
 	 */
 	protected function validateConstraint(ConstraintWrapperInterface $wrapper, $constraint, $input, &$errors = [])
 	{
-		$value = null;
+		$path = null;
 		
 		if(is_resource($input))
 		{
 			$metadata = stream_get_meta_data($input);
 			
 			if(isset($metadata["uri"]))
-				$value = $metadata["uri"];
+				$path = $metadata["uri"];
+		}
+		elseif(is_object($input) && $input instanceof PsrUploadedFileInterface)
+		{
+			$stream = $input->getStream();
+			
+			if($stream instanceof PsrStreamInterface)
+				$path = $stream->getMetadata("uri");
+		}
+		elseif(is_string($input) && file_exists($input))
+		{
+			$path = realpath($input);
 		}
 		
-		return $wrapper->validate($constraint, $value, $errors);
+		return $wrapper->validate($constraint, $path, $errors);
 	}
 }

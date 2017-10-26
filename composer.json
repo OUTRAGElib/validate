@@ -3,10 +3,11 @@
     "description": "Validation library for OUTRAGElib",
     "type": "library",
     "require": {
-        "outragelib/delegator": "dev-master",
-        "outragelib/objectlist": "dev-master",
         "guzzlehttp/guzzle": "~6.0",
-        "outragelib/fs-temp": "dev-master"
+        "outragelib/delegator": "dev-master",
+        "outragelib/fs-temp": "dev-master",
+        "outragelib/objectlist": "dev-master",
+        "outragelib/psr7-file-stream": "dev-master"
     },
     "license": "MIT",
     "authors": [
@@ -22,14 +23,14 @@
         }
     },
     "suggest": {
-        "zendframework/zend-validator": "^2.10",
-        "symfony/validator": "^3.3"
+        "symfony/validator": "^3.3",
+        "zendframework/zend-validator": "^2.10"
     },
     "require-dev": {
-        "zendframework/zend-validator": "^2.10",
-        "symfony/validator": "^3.3",
         "filp/whoops": "^2.1",
         "illuminate/validation": "^5.4",
-        "phpunit/phpunit": "^6.4@dev"
+        "phpunit/phpunit": "^6.4@dev",
+        "symfony/validator": "^3.3",
+        "zendframework/zend-validator": "^2.10"
     }
 }

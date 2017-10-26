@@ -17,14 +17,26 @@ use \PHPUnit\Framework\TestCase;
 class FileBufferElementValidationTest extends TestCase
 {
 	/**
+	 *	What is the file we're looking at?
+	 */
+	protected const TEST_FILE_URL = "https://ss.westie.sh/r5zI";
+	
+	
+	/**
+	 *	What is the correct MD5 hash of the file we're looking at?
+	 */
+	protected const TEST_FILE_MD5 = "57506d251613cb73c12aa947bedcfade";
+	
+	
+	/**
 	 *	Zend MD5 test
 	 */
 	public function testFileBufferZendMD5Valid()
 	{
 		$element = new FileBufferElement();
-		$element->addConstraint(new \Zend\Validator\File\Md5("57506d251613cb73c12aa947bedcfade"));
+		$element->addConstraint(new \Zend\Validator\File\Md5(self::TEST_FILE_MD5));
 		
-		$result = $element->test("https://ss.westie.sh/r5zI");
+		$result = $element->test(self::TEST_FILE_URL);
 		
 		$this->assertTrue($result);
 	}
@@ -38,7 +50,7 @@ class FileBufferElementValidationTest extends TestCase
 		$element = new FileBufferElement();
 		$element->addConstraint(new \Zend\Validator\File\Md5("00000000000000000000000000000000"));
 		
-		$result = $element->test("https://ss.westie.sh/r5zI");
+		$result = $element->test(self::TEST_FILE_URL);
 		
 		$this->assertFalse($result);
 	}
@@ -52,7 +64,7 @@ class FileBufferElementValidationTest extends TestCase
 		$element = new FileBufferElement();
 		$element->addConstraint(new \Zend\Validator\File\Size([ "min" => "10kB", "max" => "4MB" ]));
 		
-		$result = $element->test("https://ss.westie.sh/r5zI");
+		$result = $element->test(self::TEST_FILE_URL);
 		
 		$this->assertTrue($result);
 	}
@@ -66,7 +78,7 @@ class FileBufferElementValidationTest extends TestCase
 		$element = new FileBufferElement();
 		$element->addConstraint(new \Zend\Validator\File\Size([ "min" => "1", "max" => "2" ]));
 		
-		$result = $element->test("https://ss.westie.sh/r5zI");
+		$result = $element->test(self::TEST_FILE_URL);
 		
 		$this->assertFalse($result);
 	}
@@ -80,16 +92,16 @@ class FileBufferElementValidationTest extends TestCase
 		$element = new FileBufferElement();
 		
 		$settings = [
-            "maxSize" => "1M",
-            
-            "mimeTypes" => [
-                "image/png",
-            ],
+			"maxSize" => "1M",
+			
+			"mimeTypes" => [
+				"image/png",
+			],
 		];
 		
 		$element->addConstraint(new \Symfony\Component\Validator\Constraints\File($settings));
 		
-		$result = $element->test("https://ss.westie.sh/r5zI");
+		$result = $element->test(self::TEST_FILE_URL);
 		
 		$this->assertTrue($result);
 	}
@@ -103,16 +115,16 @@ class FileBufferElementValidationTest extends TestCase
 		$element = new FileBufferElement();
 		
 		$settings = [
-            "maxSize" => "1",
-            
-            "mimeTypes" => [
-                "image/gif",
-            ],
+			"maxSize" => "1",
+			
+			"mimeTypes" => [
+				"image/gif",
+			],
 		];
 		
 		$element->addConstraint(new \Symfony\Component\Validator\Constraints\File($settings));
 		
-		$result = $element->test("https://ss.westie.sh/r5zI");
+		$result = $element->test(self::TEST_FILE_URL);
 		
 		$this->assertFalse($result);
 	}

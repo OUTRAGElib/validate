@@ -4,8 +4,11 @@
 namespace OUTRAGElib\Validate\BufferElement;
 
 use \Exception;
-use \OUTRAGElib\Validate\Element;
+use \OUTRAGElib\FileStream\File;
+use \OUTRAGElib\FileStream\Stream;
+use \OUTRAGElib\Validate\BufferElement\File\Storage\Temporary as TemporaryStorage;
 use \OUTRAGElib\Validate\BufferElementAbstract;
+use \OUTRAGElib\Validate\Element;
 
 
 class StringBufferElement extends BufferElementAbstract
@@ -15,21 +18,45 @@ class StringBufferElement extends BufferElementAbstract
 	 */
 	public function validate($input, $context = null)
 	{
-		$fp = null;
+		$stream = null;
+		
+		$stream_file_name = "buffer.txt";
+		$stream_mime_type = "application/text";
 		
 		if(is_resource($input))
 		{
-			$fp = $input;
+			$stream = new Stream();
+			$stream->setFilePointer($input);
 		}
 		elseif(!is_null($input))
 		{
-			# the pattern should be type, mime/type, name
-			$fp = fopen("php://temp/string/application/text/buffer.txt", "w+");
+			$storage = new TemporaryStorage();
 			
-			fwrite($fp, $input);
-			rewind($fp);
+			if($fp = $storage->open($stream_file_name))
+			{
+				fwrite($fp, $input);
+				rewind($fp);
+				
+				$stream = new Stream();
+				$stream->setFilePointer($fp);
+			}
 		}
 		
-		return parent::validate($fp, $context);
+		# and now build the file object
+		if(isset($stream))
+		{
+			$file = new File();
+			
+			$file->setStream($stream);
+			$file->setClientFilename($stream_file_name);
+			$file->setClientMediaType($stream_mime_type);
+			
+			if(parent::validate($file, $context) === null)
+				return null;
+			
+			return $file;
+		}
+		
+		return parent::validate(null, $context);
 	}
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<phpdox xmlns="http://xml.phpdox.net/config" silent="false">
+    <bootstrap />
+    
+    <project name="phpdox" source="${basedir}/lib" workdir="${basedir}/build/phpdox/xml">
+        <collector publiconly="false" backend="parser" encoding="auto">
+            <include mask="*.php" />
+            <exclude mask="" />
+            
+            <inheritance resolve="true">
+            </inheritance>
+        </collector>
+
+        <generator output="${basedir}/docs">
+            <enrich base="${basedir}/build">
+                <source type="phpunit">
+                    <filter directory="${basedir}/tests" />
+                </source>
+            </enrich>
+            
+            <build engine="html" enabled="true" output="html">
+                <template dir="${phpDox.home}/templates/html" />
+                <file extension="xhtml" />
+            </build>
+        </generator>
+    </project>
+</phpdox>

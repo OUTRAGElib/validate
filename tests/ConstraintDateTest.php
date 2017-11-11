@@ -3,8 +3,6 @@
 
 namespace OUTRAGElib\Validate\Tests;
 
-require __DIR__."/../vendor/autoload.php";
-
 use \OUTRAGElib\Validate\Constraint\Date;
 use \OUTRAGElib\Validate\Element;
 use \PHPUnit\Framework\TestCase;

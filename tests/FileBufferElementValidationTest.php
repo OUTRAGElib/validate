@@ -3,8 +3,6 @@
 
 namespace OUTRAGElib\Validate\Tests;
 
-require __DIR__."/../vendor/autoload.php";
-
 use \OUTRAGElib\Validate\BufferElement\FileBufferElement;
 use \OUTRAGElib\Validate\Constraint\Required;
 use \OUTRAGElib\Validate\Element;

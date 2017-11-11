@@ -3,8 +3,6 @@
 
 namespace OUTRAGElib\Validate\Tests;
 
-require __DIR__."/../vendor/autoload.php";
-
 use \OUTRAGElib\FileStream\FileInterface;
 use \OUTRAGElib\FileStream\StreamInterface;
 use \OUTRAGElib\Validate\BufferElement\StringBufferElement;

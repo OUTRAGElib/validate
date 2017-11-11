@@ -3,8 +3,6 @@
 
 namespace OUTRAGElib\Validate\Tests;
 
-require __DIR__."/../vendor/autoload.php";
-
 use \OUTRAGElib\Validate\ElementInterface;
 use \OUTRAGElib\Validate\ElementListBuilder;
 use \OUTRAGElib\Validate\ElementListInterface;

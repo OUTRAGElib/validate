@@ -33,9 +33,7 @@ class ElementListBuilderTest extends TestCase
 				new \Symfony\Component\Validator\Constraints\Length([ "min" => 13 ]),
 			],
 			
-			"d[e][g][c]" => [
-				new \OUTRAGElib\Validate\Constraint\Required(true),
-			],
+			"d[e][g][c]" => true,
 			
 			"d.e.f" => [
 				new \Zend\Validator\StringLength([ "min" => 12 ]),
@@ -278,7 +276,7 @@ class ElementListBuilderTest extends TestCase
 		$builder = new ElementListBuilder();
 		
 		$constraints = [
-			new \OUTRAGElib\Validate\Constraint\Required(true),
+			true,
 		];
 		
 		$template = $builder->getTemplate([

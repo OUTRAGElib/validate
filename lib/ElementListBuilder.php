@@ -25,8 +25,8 @@ class ElementListBuilder
 	 */
 	public function build(ElementList $template, $input = [])
 	{
-		foreach($input as $index => $constraints)
-			$this->parseConstraint($template, $index, $constraints);
+		foreach($input as $index => $arguments)
+			$this->parseElement($template, $index, $arguments);
 		
 		return $this;
 	}
@@ -35,7 +35,7 @@ class ElementListBuilder
 	/**
 	 *	Do things to our element list...
 	 */
-	protected function parseConstraint(ElementList $template, $index, $constraints)
+	protected function parseElement(ElementList $template, $index, $arguments)
 	{
 		$tree = $template->parsePropertyName($index);
 		
@@ -62,11 +62,7 @@ class ElementListBuilder
 						if($object instanceof ElementList)
 							throw new ElementListBuilderException("Unexpected ElementList");
 						
-						if(is_array($constraints))
-						{
-							foreach($constraints as $constraint)
-								$object->addConstraint($constraint);
-						}
+						$this->configureElement($object, $arguments);
 					}
 					
 					if(($i + 1) < $branches && $object instanceof Element)
@@ -79,11 +75,7 @@ class ElementListBuilder
 					{
 						$object = (new Element($tree[$i]))->appendTo($object);
 						
-						if(is_array($constraints))
-						{
-							foreach($constraints as $constraint)
-								$object->addConstraint($constraint);
-						}
+						$this->configureElement($object, $arguments);
 					}
 					else
 					{
@@ -114,5 +106,32 @@ class ElementListBuilder
 		}
 		
 		return false;
+	}
+	
+	
+	/**
+	 *	Oddly enough, configures a new object
+	 */
+	protected function configureElement(ElementInterface $element, $arguments)
+	{
+		if(!is_array($arguments))
+			$arguments = [ $arguments ];
+		
+		foreach($arguments as $argument)
+		{
+			# the plan:
+			# 	- if a boolean is passed, mark as 'required'/'not required' as specified
+			#	- anything that is a transformer is treated as such
+			#	- otherwise, treat everything else as a constraint
+			
+			if(is_bool($argument))
+				$element->setRequired($argument);
+			elseif($argument instanceof TransformerInterface)
+				$element->addTransformer($argument);
+			else
+				$element->addConstraint($argument);
+		}
+		
+		return true;
 	}
 }

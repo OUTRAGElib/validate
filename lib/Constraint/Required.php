@@ -40,4 +40,13 @@ class Required extends ConstraintAbstract
 		
 		return true;
 	}
+	
+	
+	/**
+	 *	Retrieve the state of this constrant
+	 */
+	public function isRequired()
+	{
+		return $this->required;
+	}
 }

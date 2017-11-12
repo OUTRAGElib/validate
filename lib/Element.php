@@ -70,7 +70,7 @@ class Element extends Component implements ElementInterface
 			foreach($this->root->getTransformerWrappers() as $wrapper)
 			{
 				# a cool feature of this is that we're able to just stick any type
-				# of conditional in and as long as the constraint wrapper is available
+				# of transformer in and as long as the transformer wrapper is available
 				# it will just go ahead and test it - how fun, right?
 				foreach($wrapper->filterTransformers($this->transformers) as $transformer)
 				{
@@ -80,8 +80,20 @@ class Element extends Component implements ElementInterface
 			}
 		}
 		
-		# now properly validate stuff
-		if(count($this->constraints) > 0)
+		# something that might be worth checking is seeing whether or not this
+		# element is able to be processed.
+		# 
+		# previously, if a null/undefined value was passed here, then the validators
+		# will always be run.
+		# now, if the field is not marked as required, and the field is null, we will
+		# skip all processing. this of course takes into account default values, as per
+		# the code block above.
+		$process = true;
+		
+		if($this instanceof BufferElementInterface === false)
+			$process = is_null($input) && $this->isRequired();
+		
+		if($process && count($this->constraints) > 0)
 		{
 			foreach($this->root->getConstraintWrappers() as $wrapper)
 			{

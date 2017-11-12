@@ -3,6 +3,9 @@
 
 namespace OUTRAGElib\Validate;
 
+use \Exception;
+use \OUTRAGElib\Validate\Constraint\Required;
+
 
 trait ConstraintTrait
 {
@@ -76,5 +79,38 @@ trait ConstraintTrait
 		}
 		
 		return $list;
+	}
+	
+	
+	/**
+	 *	Set this element as being required, using the Required constraint
+	 */
+	public function setRequired($required)
+	{
+		$required = $required && true;
+		
+		if($this->constraints)
+			$this->removeConstraint(Required::class);
+		
+		$this->addConstraint(new Required($required));
+		
+		return $this;
+	}
+	
+	
+	/**
+	 *	Retrieve whether or not this element is required
+	 */
+	public function isRequired()
+	{
+		$required = false;
+		
+		if($this->constraints)
+		{
+			foreach($this->getConstraints(Required::class) as $constraint)
+				$required = $required || $constraint->isRequired();
+		}
+		
+		return $required;
 	}
 }

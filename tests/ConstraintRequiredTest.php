@@ -36,4 +36,28 @@ class ConstraintRequiredTest extends TestCase
 		
 		$this->assertFalse($result);
 	}
+	
+	
+	/**
+	 *	Test to see if ->setRequired functionality works
+	 *	(basically is a wrapper for required()...
+	 */
+	public function testElementSetRequired()
+	{
+		$required = true;
+		
+		$element = new Element();
+		
+		$this->assertEquals(0, count($element->getConstraints()));
+		
+		for($i = 0; $i < 2; ++$i)
+			$element->setRequired($required);
+		
+		$this->assertEquals(1, count($element->getConstraints()));
+		$this->assertEquals($required, $element->isRequired());
+		
+		$result = $element->test(null);
+		
+		$this->assertFalse($result);
+	}
 }

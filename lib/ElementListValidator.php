@@ -73,7 +73,7 @@ class ElementListValidator
 		# now for the fun bit of iterating through this mess and doing our validation
 		$offset = count($tree);
 		$pairs = [];
-				
+		
 		# iterate through our defined elements
 		foreach($template->children as $element)
 		{

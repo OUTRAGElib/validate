@@ -91,7 +91,7 @@ class Element extends Component implements ElementInterface
 		$process = true;
 		
 		if($this instanceof BufferElementInterface === false)
-			$process = is_null($input) && $this->isRequired();
+			$process = !is_null($input) || $this->isRequired();
 		
 		if($process && count($this->constraints) > 0)
 		{

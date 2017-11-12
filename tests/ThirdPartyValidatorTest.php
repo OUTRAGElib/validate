@@ -29,9 +29,17 @@ class ThirdPartyValidatorTest extends TestCase
 	{
 		$template = new ElementList();
 		
-		$template->append("symfony");
-		$template->append("zend");
-		$template->append("callback");
+		$element = new Element("symfony");
+		$element->setRequired(true);
+		$element->appendTo($template);
+		
+		$element = new Element("zend");
+		$element->setRequired(true);
+		$element->appendTo($template);
+		
+		$element = new Element("callback");
+		$element->setRequired(true);
+		$element->appendTo($template);
 		
 		$this->assertNotEmpty($template->children);
 		

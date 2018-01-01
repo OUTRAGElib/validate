@@ -3,6 +3,7 @@
 
 namespace OUTRAGElib\Validate;
 
+use \Exception;
 use \OUTRAGElib\Validate\Error\ErrorMessage;
 
 
@@ -11,7 +12,7 @@ trait ErrorTrait
 	/**
 	 *	We'll store all errors here as well.
 	 */
-	public $errors = [];
+	protected $errors = [];
 	
 	
 	/**
@@ -26,12 +27,22 @@ trait ErrorTrait
 		$error->context = $context;
 		$error->message = $message;
 		
-		$context->errors[] = $error;
+		$context->addError($error);
 		
-		if($context->root instanceof ElementList)
-			$context->root->errors[] = $error;
+		# roots are always going to be element lists
+		if($context->root instanceof ElementListInterface)
+			$context->root->addError($error);
 		
 		return $this;
+	}
+	
+	
+	/**
+	 *	Add an already created error message
+	 */
+	public function addError(ErrorMessage $error)
+	{
+		$this->errors[] = $error;
 	}
 	
 	

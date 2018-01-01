@@ -7,7 +7,7 @@ use \Exception;
 use \OUTRAGElib\Structure\NotFoundException;
 
 
-class ElementList extends Component implements ElementListInterface
+class ElementList extends Node implements ElementListInterface
 {
 	/**
 	 *	We shall use this to store values generated from validated input methods.
@@ -36,8 +36,18 @@ class ElementList extends Component implements ElementListInterface
 	{
 		parent::__construct($component);
 		
-		if(method_exists($this, "rules"))
-			$this->rules();
+		# thanks to the linting within phpstan, this will throw up errors and it's probably
+		# better to have it defined within the interface anyhow
+		$this->rules();
+	}
+	
+	
+	/**
+	 *	An entry point to begin adding in rules on class initialisation
+	 */
+	public function rules()
+	{
+		return;
 	}
 	
 	
@@ -196,7 +206,7 @@ class ElementList extends Component implements ElementListInterface
 	{
 		if(is_string($value))
 			$value = new Element($value);
-		elseif($value instanceof Component == false)
+		elseif($value instanceof Node == false)
 			throw new Exception("Unable to add item to list - invalid type");
 		
 		if($value->parent)
@@ -214,7 +224,7 @@ class ElementList extends Component implements ElementListInterface
 	 */
 	public function remove($value)
 	{
-		if($value instanceof Component == false)
+		if($value instanceof Node == false)
 			throw new Exception("Unable to add item to list - invalid type");
 		
 		$value->parent = null;
@@ -244,7 +254,7 @@ class ElementList extends Component implements ElementListInterface
 	 */
 	public function unshift($value)
 	{
-		if($value instanceof Component == false)
+		if($value instanceof Node == false)
 			throw new Exception("Unable to add item to list - invalid type");
 		
 		array_unshift($this->children, $value);
@@ -355,7 +365,7 @@ class ElementList extends Component implements ElementListInterface
 		if(!array_key_exists($property, $this->children))
 			throw new NotFoundException("Invalid property '".$property."'");
 		
-		return $this->list[$property];
+		return $this->children[$property];
 	}
 	
 	

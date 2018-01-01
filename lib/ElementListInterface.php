@@ -7,8 +7,14 @@ use \Exception;
 use \OUTRAGElib\Structure\ObjectListInterface;
 
 
-interface ElementListInterface extends ObjectListInterface, ErrorInterface
+interface ElementListInterface extends ObjectListInterface, ErrorInterface, ElementGetterInterface
 {
+	/**
+	 *	An entry point to begin adding in rules on class initialisation
+	 */
+	public function rules();
+	
+	
 	/**
 	 *	Adds a constraint wrapper to the validation request
 	 */

@@ -2,3 +2,7 @@ services:
 	- class: \OUTRAGElib\Delegator\PHPStan\PropertyClassReflection
 	  tags:
 	  	- phpstan.broker.propertiesClassReflectionExtension
+	
+	- class: \OUTRAGElib\Validate\PHPStan\ElementMagicMethodReflection
+	  tags:
+	  	- phpstan.broker.methodsClassReflectionExtension

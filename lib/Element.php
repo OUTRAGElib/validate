@@ -7,7 +7,7 @@ use \Exception;
 use \OUTRAGElib\Validate\ErrorInterface;
 
 
-class Element extends Component implements ElementInterface
+class Element extends Node implements ElementInterface
 {
 	/**
 	 *	Include constraint functionality

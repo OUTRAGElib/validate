@@ -8,7 +8,7 @@ use \OUTRAGElib\Delegator\DelegatorTrait;
 use \OUTRAGElib\Validate\ConstraintWrapperInterface;
 
 
-abstract class Component implements ComponentInterface
+abstract class Node implements NodeInterface
 {
 	/**
 	 *	We'd like to use some delegators to make our life ever so easier.
@@ -81,7 +81,7 @@ abstract class Component implements ComponentInterface
 	 *	Returns a list of all accessable parent properties in this scope.
 	 *	Do I still need this?
 	 */
-	public function getter_property_tree($persistant = false)
+	public function getter_property_tree()
 	{
 		$target = $this;
 		$tree = [];
@@ -107,7 +107,7 @@ abstract class Component implements ComponentInterface
 	 *	Rather than cache it, I'll just generate its resolved name every time.
 	 *	Shouldn't cause too many problems, right?
 	 */
-	public function getter_name($persistant = false)
+	public function getter_name()
 	{
 		$return = "";
 		
@@ -136,7 +136,7 @@ abstract class Component implements ComponentInterface
 		{
 			$pointer = $pointer->parent;
 			
-			if($pointer instanceof Component == false)
+			if($pointer instanceof Node == false)
 				throw new Exception("Invalid parent hierarchy");
 		}
 		

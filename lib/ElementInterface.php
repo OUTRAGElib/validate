@@ -4,7 +4,7 @@
 namespace OUTRAGElib\Validate;
 
 
-interface ElementInterface
+interface ElementInterface extends ErrorInterface, ElementGetterInterface
 {
 	/**
 	 *	Perform a validation on this element based on the condition.

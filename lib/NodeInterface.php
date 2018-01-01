@@ -8,7 +8,7 @@ use \OUTRAGElib\Validate\ConstraintWrapperInterface;
 use \OUTRAGElib\Validate\ErrorInterface;
 
 
-interface ComponentInterface extends ErrorInterface
+interface NodeInterface extends ElementGetterInterface, ErrorInterface
 {
 	/**
 	 *	Set the name (key?) of this component.

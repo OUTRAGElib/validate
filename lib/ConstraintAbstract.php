@@ -26,7 +26,7 @@ abstract class ConstraintAbstract implements ConstraintInterface
 				call_user_func_array([ $this, "init" ], $arguments);
 		}
 		
-		return true;
+		return;
 	}
 	
 	

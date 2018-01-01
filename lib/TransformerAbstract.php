@@ -19,6 +19,6 @@ abstract class TransformerAbstract implements TransformerInterface
 				call_user_func_array([ $this, "init" ], $arguments);
 		}
 		
-		return true;
+		return;
 	}
 }

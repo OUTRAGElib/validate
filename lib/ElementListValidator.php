@@ -52,7 +52,7 @@ class ElementListValidator
 		if(!is_array($input))
 		{
 			if($input instanceof Traversable && method_exists($input, "toArray"))
-				$input = $input->toArray();
+				$input = call_user_func([ $input, "toArray" ]);
 			elseif($input instanceof Traversable)
 				$input = iterator_to_array($input);
 			else
@@ -63,7 +63,7 @@ class ElementListValidator
 		# these values before we proceed - this is where the prevalidator comes in!
 		if(method_exists($template, "prevalidate"))
 		{
-			if($template->prevalidate($input) === false)
+			if(call_user_func([ $template, "prevalidate" ], $input) === false)
 				return [];
 		}
 		

@@ -20,16 +20,16 @@ interface ConstraintWrapperInterface
 	
 	
 	/**
+	 *	Validates the specified constraints against an input
+	 */
+	public function validate($constraint, $input, &$errors = []);
+	
+	
+	/**
 	 *	Filters an array of constraints and returns ones that can be
 	 *	validated
 	 *	
 	 *	I recommend that you're returning set of *cloned* validators
 	 */
 	public function filterConstraints($constraints);
-	
-	
-	/**
-	 *	Validates the specified constraints against an input
-	 */
-	public function validate($constraint, $input, &$errors = []);
 }

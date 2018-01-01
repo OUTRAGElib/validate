@@ -22,6 +22,11 @@
             "OUTRAGElib\\Validate\\": "./lib"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "OUTRAGElib\\Validate\\Tests\\": "./tests"
+        }
+    },
     "suggest": {
         "symfony/validator": "^3.3",
         "zendframework/zend-validator": "^2.10"
@@ -29,6 +34,7 @@
     "require-dev": {
         "filp/whoops": "^2.1",
         "illuminate/validation": "^5.4",
+        "phpstan/phpstan": "^0.9.0@dev",
         "phpunit/phpunit": "^6.4@dev",
         "symfony/validator": "^3.3",
         "theseer/phpdox": "dev-master",

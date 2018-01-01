@@ -1,0 +1,4 @@
+services:
+	- class: \OUTRAGElib\Delegator\PHPStan\PropertyClassReflection
+	  tags:
+	  	- phpstan.broker.propertiesClassReflectionExtension

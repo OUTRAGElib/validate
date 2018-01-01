@@ -7,7 +7,7 @@ use \Exception;
 use \OUTRAGElib\Structure\NotFoundException;
 
 
-class ElementList extends Component implements ElementListInterface, ErrorInterface
+class ElementList extends Component implements ElementListInterface
 {
 	/**
 	 *	We shall use this to store values generated from validated input methods.

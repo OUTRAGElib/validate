@@ -25,7 +25,16 @@ class ElementList extends Node implements ElementListInterface
 	/**
 	 *	Storing child elements
 	 */
-	public $children = [];
+	protected $children = [];
+	
+	
+	/**
+	 *	Return a list of children (children are protected)
+	 */
+	public function getter_children()
+	{
+		return $this->children;
+	}
 	
 	
 	/**

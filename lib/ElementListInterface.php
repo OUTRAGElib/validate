@@ -63,4 +63,10 @@ interface ElementListInterface extends ObjectListInterface, ErrorInterface, Elem
 	 *	of the validity of the last request.
 	 */
 	public function getValues();
+	
+	
+	/**
+	 *	A property to retrieve all children
+	 */
+	public function getter_children();
 }

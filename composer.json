@@ -4,10 +4,10 @@
     "type": "library",
     "require": {
         "guzzlehttp/guzzle": "~6.0",
-        "outragelib/delegator": "dev-master",
-        "outragelib/fs-temp": "dev-master",
-        "outragelib/objectlist": "dev-master",
-        "outragelib/psr7-file-stream": "dev-master"
+        "outragelib/delegator": "^1.0",
+        "outragelib/fs-temp": "^1.0",
+        "outragelib/objectlist": "^1.0",
+        "outragelib/psr7-file-stream": "^1.0"
     },
     "license": "MIT",
     "authors": [
@@ -16,7 +16,6 @@
             "email": "westie@typefish.co.uk"
         }
     ],
-    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "OUTRAGElib\\Validate\\": "./lib"
